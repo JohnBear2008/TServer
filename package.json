@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.11.0",
+    "koa-body": "^4.1.1",
+    "koa-jwt": "^3.6.0",
+    "koa-router": "^8.0.8",
+    "koa2-cors": "^2.0.6",
+    "moment": "^2.24.0",
+    "mssql": "^6.3.1",
+    "mysql": "^2.18.1",
+    "nedb": "^1.8.0",
+    "node-xlsx": "^0.16.1"
+  }
+}
