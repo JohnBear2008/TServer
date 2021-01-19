@@ -11,6 +11,7 @@ var router = new Router({
 })
 
 router.post('/uploadfile', async (ctx, next) => {
+    console.log('uploadfile',ctx);
     // 上传单个文件
     const file = ctx.request.files.file; // 获取上传文件
     // 创建可读流
@@ -33,7 +34,8 @@ router.post('/uploadfile', async (ctx, next) => {
 
 router.post('/uploadfiles', async (ctx, next) => {
     // 上传多个文件
-    const files = ctx.request.files.file; // 获取上传文件
+    console.log(ctx.request);
+    const files = ctx.request.files; // 获取上传文件
     console.log("files", files);
 
     for (let file of files) {
