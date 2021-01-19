@@ -70,7 +70,8 @@ app.use(apiSqlserver.routes());
 const apiExcel = require('./router/api/excel')
 app.use(apiExcel.routes());
 
-
+const apiDingTalk = require('./router/api/dingTalk')
+app.use(apiDingTalk.routes());
 
 
 
