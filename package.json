@@ -3,6 +3,7 @@
     "start": "node app"
   },
   "dependencies": {
+    "bce-sdk-js": "^0.2.9",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",

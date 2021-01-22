@@ -50,6 +50,7 @@ router.post('/post', async (ctx, next) => {
         }
     });
     req.write(requestData);
+
     req.on('error', function (err) {
 
         ctx.body = {
@@ -61,11 +62,12 @@ router.post('/post', async (ctx, next) => {
     req.end();
 
     next()
-
     ctx.body = {
         code: 200,
         msg: '发送成功',
     }
+
+
 
 });
 

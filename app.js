@@ -73,6 +73,8 @@ app.use(apiExcel.routes());
 const apiDingTalk = require('./router/api/dingTalk')
 app.use(apiDingTalk.routes());
 
+const apiSMS = require('./router/api/sms')
+app.use(apiSMS.routes());
 
 
 app.listen(3000);
