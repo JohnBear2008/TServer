@@ -3,7 +3,7 @@ const https = require('https')
 const smsOptions = {
 	ak: "3ZNfTt6yTX8X3ho5e364FeoE",
 	sk: "h8tah3cAG3SzsFnllW8bobND35A1fzLs",
-	invokeId: 'sms-sign-JSgSJi57835' //更新f2VnoRb1-JQ9i-2s8Q-> sms-sign-JSgSJi57835
+	invokeId: 'sms-sign-JSgSJi57835' //更新f2VnoRb1-JQ9i-2s8Q-> sms-sign-JSgSJi57835,空白模板id  sms-tmpl-SXeoqe88118,参数 message
 }
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 			console.log("baidusms options is correct,you must set ak、sk and invokeId");
 			return;
 		}
-		var startTime = new Date();
+		// var startTime = new Date();
 
 		function callerror(msg) {
 			if (options.error) {

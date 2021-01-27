@@ -76,6 +76,9 @@ app.use(apiDingTalk.routes());
 const apiSMS = require('./router/api/sms')
 app.use(apiSMS.routes());
 
+const apiMail = require('./router/api/mail')
+app.use(apiMail.routes());
+
 
 app.listen(3000);
 console.log('app started at port 3000...');
