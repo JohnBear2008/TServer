@@ -79,6 +79,9 @@ app.use(apiSMS.routes());
 const apiMail = require('./router/api/mail')
 app.use(apiMail.routes());
 
+const apiT9 = require('./router/api/T9')
+app.use(apiT9.routes());
+
 
 app.listen(3000);
 console.log('app started at port 3000...');

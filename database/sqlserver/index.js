@@ -33,10 +33,10 @@ const execute = async ({
     sql,
     params
 }) => {
+    console.log(sql, params);
     try {
         await mssql.connect(config)
         let rs = await mssql.query(sql, params)
-        // console.dir(rs)
         return rs
     } catch (err) {
         console.log('err', err);
