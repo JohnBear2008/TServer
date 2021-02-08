@@ -18,18 +18,18 @@ router.get('/ajaxGet', async (ctx, next) => {
     let params = ctx.query.params;
     console.log(sql, params);
 
-    let billsData = await sqlserver.execute({
+    let rs = await sqlserver.execute({
         sql: sql,
         params: params
     })
 
-    console.log('getBills billsData', billsData);
+    console.log('getBills rs', rs);
 
-    if (billsData) {
+    if (rs) {
         ctx.body = {
             code: 200,
             msg: 'success',
-            data: billsData.recordsets
+            data: rs.recordset
         }
     } else {
         ctx.body = {

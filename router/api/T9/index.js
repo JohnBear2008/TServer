@@ -44,7 +44,15 @@ router.post('/addMaterial', async (ctx, next) => {
 
 
 
-    let sqlSelect = "select * from comMaterialGroup where MaterialId='" + MaterialId + "'";
+    let sqlSelect =
+        "select count(1) as num from comMaterialGroup where MaterialId='" + MaterialId + "' union " +
+        "select count(1) as num from comMaterial where MaterialId='" + MaterialId + "' union " +
+        "select count(1) as num from comMaterialSales where MaterialId='" + MaterialId + "' union " +
+        "select count(1) as num from comMaterialInventory where MaterialId='" + MaterialId + "' union " +
+        "select count(1) as num from plsMaterialPlanData where MaterialId='" + MaterialId + "' union " +
+        "select count(1) as num from comMaterialManufacture where MaterialId='" + MaterialId + "' union " +
+        "select count(1) as num from coMaterialCost where MaterialId='" + MaterialId + "' union " +
+        "select count(1) as num from comMaterialQuality where MaterialId='" + MaterialId + "'";
 
     let rs1 = await sqlserver.execute({
         sql: sqlSelect,
@@ -53,7 +61,15 @@ router.post('/addMaterial', async (ctx, next) => {
 
     console.log('select rs', rs1);
 
-    if (rs1.recordset.length > 0) {
+    let num = 0;
+    let recordset = rs1.recordset;
+    console.log('recordset', recordset);
+    for (const n of recordset) {
+        num = num + n.num;
+    }
+    console.log('num', num);
+
+    if (num > 0) {
         ctx.body = {
             code: 400,
             msg: '已存在此物料,请检查',
@@ -62,8 +78,15 @@ router.post('/addMaterial', async (ctx, next) => {
     }
 
 
+
     let values = "'" + MaterialTypeId + "'," + "'" + MaterialId + "'," + "'" + MaterialName + "'," + "'" + MaterialCategoryId + "'," + "'" + HasComboProd + "'," + "'" + UnitId + "'," + "'" + X_Supplier + "'," + "'" + X_MatVersion + "'," + "'" + MaterialSpec + "'";
-    let sqlInsert = "insert into comMaterialGroup (MaterialTypeId,MaterialId,MaterialName,MaterialCategoryId,HasComboProd,UnitId,X_Supplier,X_MatVersion,MaterialSpec) values  (" + values + ")"
+    let sqlInsert = "";
+    let comMaterialGroupSql = "insert into comMaterialGroup (MaterialTypeId,MaterialId,MaterialName,MaterialCategoryId,HasComboProd,UnitId,X_Supplier,X_MatVersion,MaterialSpec) values  (" + values + ");"
+    let comMaterialSql = "insert into comMaterial (FOrgId,MaterialTypeId,MaterialId,MaterialCategoryId) values  ('TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "'," + "'" + MaterialCategoryId + "');"
+    let comMaterialManufactureSql = "insert into comMaterialManufacture (FactoryId,FOrgId,MaterialTypeId,MaterialId) values  ('TM01', 'TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "');"
+
+    sqlInsert = comMaterialGroupSql + comMaterialSql + comMaterialManufactureSql;
+
 
     let rs = await sqlserver.execute({
         sql: sqlInsert,
@@ -71,7 +94,7 @@ router.post('/addMaterial', async (ctx, next) => {
     })
     console.log('insert rs', rs);
     next()
-    if (rs.rowsAffected > 0) {
+    if (rs.rowsAffected[0] > 0) {
         ctx.body = {
             code: 200,
             msg: 'success',
