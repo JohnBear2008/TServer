@@ -79,13 +79,28 @@ router.post('/addMaterial', async (ctx, next) => {
 
 
 
-    let values = "'" + MaterialTypeId + "'," + "'" + MaterialId + "'," + "'" + MaterialName + "'," + "'" + MaterialCategoryId + "'," + "'" + HasComboProd + "'," + "'" + UnitId + "'," + "'" + X_Supplier + "'," + "'" + X_MatVersion + "'," + "'" + MaterialSpec + "'";
+    let values = "'" + MaterialTypeId + "'," + "'" + MaterialId + "'," + "'" + MaterialName + "'," + "'" + MaterialCategoryId + "'," + "'" + HasComboProd + "'," + "'" + UnitId + "'," + "'" + X_Supplier + "'," + "'" + X_MatVersion + "'," + "'" + MaterialSpec + "','ACTIVE'";
     let sqlInsert = "";
-    let comMaterialGroupSql = "insert into comMaterialGroup (MaterialTypeId,MaterialId,MaterialName,MaterialCategoryId,HasComboProd,UnitId,X_Supplier,X_MatVersion,MaterialSpec) values  (" + values + ");"
-    let comMaterialSql = "insert into comMaterial (FOrgId,MaterialTypeId,MaterialId,MaterialCategoryId) values  ('TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "'," + "'" + MaterialCategoryId + "');"
-    let comMaterialManufactureSql = "insert into comMaterialManufacture (FactoryId,FOrgId,MaterialTypeId,MaterialId) values  ('TM01', 'TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "');"
+    //物料基础数据
+    let comMaterialGroup = "insert into comMaterialGroup (MaterialTypeId,MaterialId,MaterialName,MaterialCategoryId,HasComboProd,UnitId,X_Supplier,X_MatVersion,MaterialSpec,MaterialUsedStateId) values  (" + values + ");"
+    //物料公司数据
+    let comMaterial = "insert into comMaterial (FOrgId,MaterialTypeId,MaterialId,MaterialCategoryId) values  ('TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "'," + "'" + MaterialCategoryId + "');"
+    //物料生产数据
+    let comMaterialManufacture = "insert into comMaterialManufacture (FactoryId,FOrgId,MaterialTypeId,MaterialId) values  ('TM01', 'TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "');"
+    //物料销售数据
+    let comMaterialSales = "insert into comMaterialSales (OrgId,MaterialTypeId,MaterialId,CurrId,TaxId) values  ( 'TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "','CNY','VT013');"
+    //物料采购数据
+    let comMaterialPurchases = "insert into comMaterialPurchases (OrgId,MaterialTypeId,MaterialId,CurrId,TaxId) values  ( 'TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "','CNY','VT013');"
+    //物料库存数据
+    let comMaterialInventory = "insert into comMaterialInventory (FOrgId,MaterialTypeId,MaterialId) values  ('TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "');"
+    //物料质量数据
+    let comMaterialQuality = "insert into comMaterialQuality (OrgId,MaterialTypeId,MaterialId,ValueSourceType,checkType,CheckProjectId) values  ('TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "',1,1,'FA01');"
+    //物料计划数据
+    let plsMaterialPlanData = "insert into plsMaterialPlanData (PlanRangeId,FOrgId,MaterialTypeId,MaterialId) values  ('1000','TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "');"
+    //物料成本数据
+    let coMaterialCost = "insert into coMaterialCost (FOrgId,MaterialTypeId,MaterialId) values  ('TM01','" + MaterialTypeId + "'," + "'" + MaterialId + "');"
 
-    sqlInsert = comMaterialGroupSql + comMaterialSql + comMaterialManufactureSql;
+    sqlInsert = comMaterialGroup + comMaterial + comMaterialManufacture + comMaterialSales + comMaterialPurchases + comMaterialInventory + comMaterialQuality + plsMaterialPlanData + coMaterialCost;
 
 
     let rs = await sqlserver.execute({
