@@ -1,6 +1,6 @@
 // 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
-
+const path = require('path');
 const request = require('request');
 const cheerio = require('cheerio')
 const fs = require('fs');
@@ -128,7 +128,8 @@ const operation = (body, year) => {
         year: year,
         data: data
     })
-    fs.writeFile(`./router/api/holiday/records/${year}.json`, JSON.stringify(dates), err => {
+    let filePath = path.join(__dirname, '/records/' + year + '.json');
+    fs.writeFile(`${filePath}`, JSON.stringify(dates), err => {
         if (err) return console.log(err)
         console.log(`写入 ${year}.json 成功！`)
     })

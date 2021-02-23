@@ -843,6 +843,11 @@ koa-router@^8.0.8:
     path-to-regexp "1.x"
     urijs "^1.19.2"
 
+koa-sslify@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npm.taobao.org/koa-sslify/download/koa-sslify-4.0.3.tgz#79ec31042a607d0c4c0a32e21cea513708840c1c"
+  integrity sha1-eewxBCpgfQxMCjLiHOpRNwiEDBw=
+
 koa-unless@1.0.7:
   version "1.0.7"
   resolved "https://registry.npm.taobao.org/koa-unless/download/koa-unless-1.0.7.tgz#b9df375e2b4da3043918d48622520c2c0b79f032"
