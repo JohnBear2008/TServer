@@ -4,10 +4,8 @@ const app = new Koa();
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
-const enforceHttps = require('koa-sslify').default;//必须添加default参数,避免非函数报错
 
-// Force HTTPS on all page
-app.use(enforceHttps());
+
 
 //文件上传组件
 const koaBody = require('koa-body'); //此组件同koa-bodyparser 冲突 不能同时启用,启用此组件,可替换koa-bodyparser
@@ -101,18 +99,21 @@ app.use(apiUpdate.routes());
 
 // app.listen(3000);
 
-// start the server
-http.createServer(app.callback()).listen(3000);
+// // start the server
+// // http.createServer(app.callback()).listen(3000);
+
+// console.log('app started at port 3000...');
 
 
 // SSL options
-var options = {
+
+//Force HTTPS on all page  启用https 前端blob报405错误
+const enforceHttps = require('koa-sslify').default;//必须添加default参数,避免非函数报错
+app.use(enforceHttps());
+const options = {
     key: fs.readFileSync('./cert/server_no_passwd.key'), //ssl文件路径
     cert: fs.readFileSync('./cert/server.crt') //ssl文件路径
 };
-https.createServer(options, app.callback()).listen(443);
-
-//
-console.log('https server is running');
-
-console.log('app started at port 3000...');
+// https.createServer(options, app.callback()).listen(443);
+https.createServer(options, app.callback()).listen(8000);
+console.log('https server is running at 8000');

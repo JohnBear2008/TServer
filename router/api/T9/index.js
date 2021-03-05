@@ -4,7 +4,10 @@ const Router = require('koa-router');
 //引入mysql数据库模块
 const sqlserver = require('../../../database/sqlserver')
 
-const sql = require('./sql')
+const sqlDict = require('./sqlDict')
+
+//引入字典
+const dict = require('./dict')
 
 
 //定义api前缀
@@ -17,6 +20,33 @@ router.get('/', async (ctx, next) => {
     next()
     ctx.response.body = '<h1>T9接口测试</h1>';
 });
+
+//get 通用接口
+router.get('/getBySql', async (ctx, next) => {
+    console.log('getBySql', ctx.request.query);
+    let {
+        to,
+        sql,
+        params
+    } = ctx.request.query
+
+    let sqlParams = params ? params : [];
+
+    let rs = await sqlserver.execute({
+        sql: sqlDict[sql],
+        params: sqlParams
+    })
+    console.log('getBySql rs', rs.recordset);
+    let data = rs.recordset;
+    data = dict.translater({
+        data,
+        to
+    })
+
+    next()
+    ctx.response.body = data;
+});
+
 
 
 //修改密码

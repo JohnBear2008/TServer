@@ -6,7 +6,7 @@ module.exports = {
     port: 1433,
     pool: {
         min: 0,
-        max: 10,
+        max: 100,
         idleTimeoutMillis: 3000
     }
 }
