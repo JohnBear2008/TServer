@@ -2,7 +2,10 @@ const addMaterial = "insert into comMaterialGroup ( MaterialId,MaterialName,Mate
 
 const getProductsSelector = "select MaterialSpec as value,MaterialSpec+','+MaterialName AS 'option',MaterialId as token from comMaterialGroup"
 
+const getMaterial = "select MaterialId,MaterialName from comMaterialGroup"
+
 module.exports = {
     addMaterial: addMaterial,
-    getProductsSelector: getProductsSelector
+    getProductsSelector: getProductsSelector,
+    getMaterial: getMaterial
 }

@@ -99,10 +99,9 @@ app.use(apiUpdate.routes());
 
 // app.listen(3000);
 
-// // start the server
-// // http.createServer(app.callback()).listen(3000);
-
-// console.log('app started at port 3000...');
+//start the server
+http.createServer(app.callback()).listen(3000);
+console.log('http server is running at 3000');
 
 
 // SSL options

@@ -8,6 +8,8 @@ const sqlDict = require('./sqlDict')
 
 //引入字典
 const dict = require('./dict')
+//引入自定义函数库
+const util = require('../../../funs/util')
 
 
 //定义api前缀
@@ -22,20 +24,29 @@ router.get('/', async (ctx, next) => {
 });
 
 //get 通用接口
-router.get('/getBySql', async (ctx, next) => {
-    console.log('getBySql', ctx.request.query);
+router.get('/ajaxGet', async (ctx, next) => {
+
     let {
         to,
         sql,
         params
-    } = ctx.request.query
+    } = ctx.request.query;
 
-    let sqlParams = params ? params : [];
+    console.log('getBySql22222', to, sql, params);
+    //c
+    if (!to) {
+        ctx.response.body = {
+            error: 'to 参数未设定!'
+        };
+    }
+
+    let sqlParams = params ? params.split(',') : [];
 
     let rs = await sqlserver.execute({
         sql: sqlDict[sql],
         params: sqlParams
     })
+
     console.log('getBySql rs', rs.recordset);
     let data = rs.recordset;
     data = dict.translater({
@@ -43,10 +54,53 @@ router.get('/getBySql', async (ctx, next) => {
         to
     })
 
+    console.log('data', data);
+
     next()
     ctx.response.body = data;
 });
 
+
+//getMaterial 接口
+router.get('/getMaterial', async (ctx, next) => {
+
+    let {
+        to,
+        materialId
+    } = ctx.request.query;
+
+    console.log('getMaterial', to, materialId);
+    //c
+    if (!to) {
+        ctx.response.body = {
+            error: 'to 参数未设定!'
+        };
+    }
+
+    let materialArr = materialId.split(',');
+    let sqlRange = util.getRangeString(materialArr)
+
+    let mainSql = sqlDict['getMaterial'];
+
+    let executeSql = mainSql + " where MaterialId in " + sqlRange;
+    console.log('executeSql:', executeSql);
+
+    let rs = await sqlserver.execute({
+        sql: executeSql
+    })
+
+    console.log('getMaterial rs', rs.recordset);
+    let data = rs.recordset;
+    data = dict.translater({
+        data,
+        to
+    })
+
+    console.log('data', data);
+
+    next()
+    ctx.response.body = data;
+});
 
 
 //修改密码
