@@ -77,12 +77,15 @@ router.get('/getMaterial', async (ctx, next) => {
         };
     }
 
-    let materialArr = materialId.split(',');
-    let sqlRange = util.getRangeString(materialArr)
-
     let mainSql = sqlDict['getMaterial'];
+    let executeSql = mainSql
+    if (materialId) {
+        let materialArr = materialId.split(',');
+        let sqlRange = util.getRangeString(materialArr)
+        executeSql = mainSql + " where MaterialId in " + sqlRange;
+    }
 
-    let executeSql = mainSql + " where MaterialId in " + sqlRange;
+
     console.log('executeSql:', executeSql);
 
     let rs = await sqlserver.execute({
@@ -91,10 +94,14 @@ router.get('/getMaterial', async (ctx, next) => {
 
     console.log('getMaterial rs', rs.recordset);
     let data = rs.recordset;
-    data = dict.translater({
-        data,
-        to
-    })
+
+    if (to && to !== 'T9') {
+        data = dict.translater({
+            data,
+            to
+        })
+    }
+
 
     console.log('data', data);
 

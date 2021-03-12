@@ -7,13 +7,13 @@ const lib = {
 }
 
 const getDict = (to) => {
-    console.log('lib', to, lib);
+    // console.log('lib', to, lib);
     for (const p in lib) {
-        console.log('getDict p', p);
+        // console.log('getDict p', p);
         if (Object.hasOwnProperty.call(lib, p)) {
             if (p === to) {
                 const element = lib[p];
-                console.log('element', element);
+                // console.log('element', element);
                 return element
             }
         }
@@ -44,9 +44,9 @@ const translater = ({
     console.log('dict', dict);
 
     for (let n of data) {
-        console.log('n', n);
+        // console.log('n', n);
         for (const p in dict) {
-            console.log('p', p);
+            // console.log('p', p);
             if (Object.hasOwnProperty.call(n, p)) {
                 n[dict[p]] = n[p]
                 delete n[p]

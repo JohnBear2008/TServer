@@ -1,4 +1,6 @@
 module.exports = {
-    MaterialId: 'productId',
-    MaterialName: 'productName'
+    CU_OldMaterialId: 'productId',
+    MaterialName: 'productName',
+    MaterialSpec: 'productDescription',
+    MaterialCategoryName: 'systemClass'
 }
