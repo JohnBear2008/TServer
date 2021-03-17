@@ -60,16 +60,64 @@ router.get('/ajaxGet', async (ctx, next) => {
     ctx.response.body = data;
 });
 
+//getData 接口
+router.get('/getData', async (ctx, next) => {
+
+    let {
+        to,
+        type,
+        UID
+    } = ctx.request.query;
+
+    console.log('getData', to, type);
+    //c
+    if (!to && type) {
+        ctx.response.body = {
+            error: 'to 参数未设定!'
+        };
+    }
+    let executeSql = ""
+    switch (type) {
+        case "material":
+            executeSql = "select ta.MaterialId,ta.MaterialName,ta.MaterialSpec,ta.CU_OldMaterialId,tb.MaterialCategoryName from comMaterialGroup ta ,comMaterialCategory tb where ta.MaterialCategoryId=tb.MaterialCategoryId"
+            break;
+
+        default:
+            break;
+    }
+
+    console.log('executeSql:', executeSql);
+
+    let rs = await sqlserver.execute({
+        sql: executeSql
+    })
+
+    console.log('getData rs', rs.recordset);
+    let data = rs.recordset;
+
+    if (to && to !== 'T9') {
+        data = dict.translater({
+            data,
+            to
+        })
+    }
+
+
+    console.log('data', data);
+
+    next()
+    ctx.response.body = data;
+});
 
 //getMaterial 接口
 router.get('/getMaterial', async (ctx, next) => {
 
     let {
         to,
-        materialId
+        UID
     } = ctx.request.query;
 
-    console.log('getMaterial', to, materialId);
+    console.log('getMaterial', to, UID);
     //c
     if (!to) {
         ctx.response.body = {
@@ -79,11 +127,27 @@ router.get('/getMaterial', async (ctx, next) => {
 
     let mainSql = sqlDict['getMaterial'];
     let executeSql = mainSql
-    if (materialId) {
-        let materialArr = materialId.split(',');
-        let sqlRange = util.getRangeString(materialArr)
+    if (UID) {
+        let UIDType = util.typeObj(UID)
+        let filterArr = []
+        switch (UIDType) {
+            case 'String':
+                filterArr = UID.split(',');
+                break;
+
+            case 'Array':
+                filterArr = UID
+                break;
+            default:
+                console.log('无法识别UIDType');
+                break;
+        }
+        let sqlRange = util.getRangeString(filterArr)
         executeSql = mainSql + " where MaterialId in " + sqlRange;
+
     }
+
+
 
 
     console.log('executeSql:', executeSql);
