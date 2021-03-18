@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-02 10:12:35
+ * @LastEditTime: 2021-03-18 12:53:57
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \TServer\router\api\T9\dict\index.js
+ */
 const RP = require('./RP')
 const util = require('../../../../funs/util')
 
@@ -6,15 +14,20 @@ const lib = {
     RP: RP
 }
 
-const getDict = (to) => {
+const getDict = ({
+    to,
+    type
+}) => {
     // console.log('lib', to, lib);
     for (const p in lib) {
         // console.log('getDict p', p);
         if (Object.hasOwnProperty.call(lib, p)) {
             if (p === to) {
-                const element = lib[p];
-                // console.log('element', element);
-                return element
+                let dict = lib[p];
+                if (type && Object.hasOwnProperty.call(lib[p], type)) {
+                    dict = lib[p][type];
+                }
+                return dict
             }
         }
     }
@@ -22,11 +35,17 @@ const getDict = (to) => {
 
 const translater = ({
     data,
-    to
+    to,
+    type
 }) => {
     //c
     if (!to) {
         console.log('to 参数错误');
+        return
+    }
+
+    if (!type) {
+        console.log('type 参数错误');
         return
     }
     //c
@@ -40,7 +59,10 @@ const translater = ({
     }
 
     //d
-    let dict = getDict(to)
+    let dict = getDict({
+        to,
+        type
+    })
     console.log('dict', dict);
 
     for (let n of data) {
