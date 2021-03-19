@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-02 09:41:19
- * @LastEditTime: 2021-03-18 15:30:39
+ * @LastEditTime: 2021-03-19 11:11:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\T9\dict\rp.js
@@ -20,5 +20,10 @@ module.exports = {
         ContactAddress: 'address',
         BizPartnerName: 'customerName',
         ShortName: 'customerShortName',
+        WorkTelNo:'workPhone',
+        FaxNo:'fax',
+        Postalcode:'zipCode',
+        LinkMan:'contact',
+        TelNo:'mobilePhone',
     }
 }
