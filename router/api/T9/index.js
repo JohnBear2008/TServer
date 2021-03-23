@@ -143,7 +143,7 @@ router.get('/getMaterial', async (ctx, next) => {
                 break;
         }
         let sqlRange = util.getRangeString(filterArr)
-        executeSql = mainSql + " where MaterialId in " + sqlRange;
+        executeSql = mainSql + " where UID in " + sqlRange;
 
     }
 
@@ -210,7 +210,7 @@ router.get('/getCustomer', async (ctx, next) => {
                 break;
         }
         let sqlRange = util.getRangeString(filterArr)
-        executeSql = mainSql + " where BizPartnerId in " + sqlRange;
+        executeSql = mainSql + " where UID in " + sqlRange;
 
     }
 
@@ -226,6 +226,73 @@ router.get('/getCustomer', async (ctx, next) => {
     // console.log('getCustomer rs', rs.recordset);
     let data = rs.recordset;
     let type = 'customer';
+
+    if (to && to !== 'T9') {
+        data = dict.translater({
+            data,
+            to,
+            type
+        })
+    }
+
+
+    // console.log('data', data);
+
+    next()
+    ctx.response.body = data;
+});
+
+
+//getPerson 接口
+router.get('/getPerson', async (ctx, next) => {
+
+    let {
+        to,
+        UID
+    } = ctx.request.query;
+
+    console.log('getPerson', to, UID);
+    //c
+    if (!to) {
+        ctx.response.body = {
+            error: 'to 参数未设定!'
+        };
+    }
+
+    let mainSql = sqlDict['getPerson'];
+    let executeSql = mainSql
+    if (UID) {
+        let UIDType = util.typeObj(UID)
+        let filterArr = []
+        switch (UIDType) {
+            case 'String':
+                filterArr = UID.split(',');
+                break;
+
+            case 'Array':
+                filterArr = UID
+                break;
+            default:
+                console.log('无法识别UIDType');
+                break;
+        }
+        let sqlRange = util.getRangeString(filterArr)
+        executeSql = mainSql + " where UID in " + sqlRange;
+
+    }
+
+
+
+
+    console.log('executeSql:', executeSql);
+
+    let rs = await sqlserver.execute({
+        sql: executeSql
+    })
+
+    // console.log('getPerson rs', rs.recordset);
+    let data = rs.recordset;
+    let type = 'person';
 
     if (to && to !== 'T9') {
         data = dict.translater({
