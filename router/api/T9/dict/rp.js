@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-02 09:41:19
- * @LastEditTime: 2021-03-23 12:39:20
+ * @LastEditTime: 2021-04-08 16:48:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\T9\dict\rp.js
@@ -32,5 +32,13 @@ module.exports = {
         HomePhone: 'homePhone',
         EducationName: 'education',
         Sex: 'sex'
+    },
+    bom: {},
+    installInfo: {
+        BOMKeyId: 'productId',
+        SubMaterialId: 'partId',
+        Describe: 'locations',
+        Quantity: 'num',
+        Remark: 'remark'
     }
 }

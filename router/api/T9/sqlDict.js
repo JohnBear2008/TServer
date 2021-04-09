@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-29 15:32:56
- * @LastEditTime: 2021-03-23 12:39:11
+ * @LastEditTime: 2021-04-08 16:25:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\T9\sqlDict.js
@@ -16,10 +16,16 @@ const getCustomer = "select * from ( SELECT DISTINCT  ta.BizPartnerId as UID,ta.
 
 const getPerson = "select * from ( SELECT ta.PersonId AS UID,ta.PersonId,ta.PersonName,case ta.Sex  WHEN 0 then '男' WHEN 1 then '女' end as Sex ,ta.Birthday,ta.Phone,ta.HomePhone,ta.OrigHomeplace,ta.CU_MailingAddress,td.EducationName,tc.DeptName FROM comGroupPerson ta,comPerson tb,comDepartment tc,hrmEducation td WHERE ta.PersonId=tb.PersonId AND tb.DeptId=tc.DeptId AND ta.HighestEduId=td.EducationId and tc.DeptName not in ('董事长室') ) TA"
 
+const getBom = "select * from BOMSubMatInfo"
+
+const getInstallInfo = "SELECT ta.SubMaterialId,tb.BOMKeyId,tb.Describe,tb.Quantity,tb.Remark FROM BOMSubMatInfo ta,BOMSubMatInstallInfo tb WHERE ta.BOMKeyId=tb.BOMKeyId AND ta.RowNo=tb.ParentRowCode AND tb.Describe <> '无'"
+
 module.exports = {
     addMaterial: addMaterial,
     getProductsSelector: getProductsSelector,
     getMaterial: getMaterial,
     getCustomer: getCustomer,
-    getPerson: getPerson
+    getPerson: getPerson,
+    getBom: getBom,
+    getInstallInfo: getInstallInfo
 }
