@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-02 10:12:35
- * @LastEditTime: 2021-03-18 12:53:57
+ * @LastEditTime: 2021-04-19 08:15:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\T9\dict\index.js
@@ -65,19 +65,25 @@ const translater = ({
     })
     console.log('dict', dict);
 
+
+    let returnData = [];
+
     for (let n of data) {
         // console.log('n', n);
+        let newN = {}
         for (const p in dict) {
             // console.log('p', p);
             if (Object.hasOwnProperty.call(n, p)) {
-                n[dict[p]] = n[p]
-                delete n[p]
+                // n[dict[p]] = n[p]
+                // delete n[p]
+                newN[dict[p]] = n[p]
             }
         }
+        returnData.push(newN)
     }
 
     //r
-    return data
+    return returnData
 }
 
 
