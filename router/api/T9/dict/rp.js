@@ -1,18 +1,20 @@
 /*
  * @Author: your name
  * @Date: 2021-03-02 09:41:19
- * @LastEditTime: 2021-04-21 15:19:58
+ * @LastEditTime: 2021-04-21 16:58:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\T9\dict\rp.js
  */
 module.exports = {
     material: {
+        UID: 'UID',
         CU_OldMaterialId: 'productId',
         MaterialName: 'productName',
         MaterialSpec: 'productDescription',
         MaterialCategoryName: 'systemClass',
-        UnitName: 'unit'
+        UnitName: 'unit',
+
     },
     customer: {
         UID: 'UID',
@@ -24,7 +26,7 @@ module.exports = {
         Postalcode: 'zipCode',
         LinkMan: 'contact',
         TelNo: 'mobilePhone',
-        isInland:'isInland'
+        isInland: 'isInland'
     },
     person: {
         PersonId: 'staffId',
