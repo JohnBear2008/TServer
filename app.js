@@ -88,6 +88,9 @@ app.use(apiMail.routes());
 const apiT9 = require('./router/api/T9')
 app.use(apiT9.routes());
 
+const apiPPM = require('./router/api/ppm')
+app.use(apiPPM.routes());
+
 const apiHoliday = require('./router/api/holiday')
 app.use(apiHoliday.routes());
 
@@ -107,7 +110,7 @@ console.log('http server is running at 3000');
 // SSL options
 
 //Force HTTPS on all page  启用https 前端blob报405错误
-const enforceHttps = require('koa-sslify').default;//必须添加default参数,避免非函数报错
+const enforceHttps = require('koa-sslify').default; //必须添加default参数,避免非函数报错
 app.use(enforceHttps());
 const options = {
     key: fs.readFileSync('./cert/server_no_passwd.key'), //ssl文件路径
