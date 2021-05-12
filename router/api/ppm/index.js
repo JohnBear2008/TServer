@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-11 15:14:07
- * @LastEditTime: 2021-05-11 18:17:34
+ * @LastEditTime: 2021-05-12 10:32:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\ppm\autoFile.js
@@ -14,6 +14,120 @@ const mysql = require('../../../database/mysql')
 
 //引入文件模块
 const fs = require('fs');
+
+
+const checkFolder = async ({
+    folderPath
+}) => {
+    //c
+    if (!folderPath) {
+        console.log('path 参数不足!');
+        return
+    }
+    //c
+    let rs = await new Promise((resolve, reject) => {
+        fs.stat(folderPath, function (err, stats) {
+            console.log(err);
+            console.log(stats);
+            if (err) {
+                // reject(false)
+                resolve(false)
+            } else {
+                resolve(true)
+            }
+        })
+    })
+    //r
+    return rs
+
+}
+
+
+const createFolder = async ({
+    folderPath
+}) => {
+    //c
+    if (!folderPath) {
+        console.log('path 参数不足!');
+        return
+    }
+    //c-检查是否已存在
+    let r1 = await checkFolder({
+        folderPath
+    })
+    if (r1) {
+        console.log('createFolder ' + folderPath + '已存在');
+        return true
+    }
+    //d
+    let createResult = await new Promise((resolve, reject) => {
+        fs.mkdir(folderPath, 0777, function (err) {
+            if (err) {
+                console.log('mkdir err', err);
+                reject(false)
+            } else {
+                resolve(true)
+            }
+        })
+    })
+
+    //r
+    return createResult
+}
+
+// createFolder({
+//     folderPath: 'E:/test/2/2/3/4'
+// })
+
+
+const placeOnFile = async ({
+    pathArr, //路径数组
+    fileName, //文件名
+    fileData //文件数据
+}) => {
+    //v
+    let pathPre = 'E:/test'
+    //c
+    if (!pathArr || !fileName || !fileData) {
+        console.log('placeOnFile 参数不足!');
+        return
+    }
+    //d-建立文件夹
+
+    let folderPath = pathPre
+    let preFolderReady = true
+    for (const path of pathArr) {
+        folderPath = folderPath + '/' + path;
+        let createFolderResult = await createFolder({
+            folderPath: folderPath
+        })
+        preFolderReady = preFolderReady && createFolderResult
+    }
+
+    if (!preFolderReady) {
+        console.log('前置文件夹出错');
+        return
+    }
+    //d-写入文件
+    let dr = await new Promise((resolve, reject) => {
+        fs.writeFile(folderPath + '/' + fileName, fileData, function (err) {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            resolve(true)
+            console.log('write成功');
+        });
+    })
+    //r
+    return dr
+}
+
+placeOnFile({
+    pathArr: ["1", "2", "3"], //路径数组
+    fileName: '1.txt', //文件名
+    fileData: '1111' //文件数据
+})
 
 //定义api前缀
 var router = new Router({
@@ -78,7 +192,7 @@ router.get('/write', async (ctx, next) => {
 router.get('/autoFile', async (ctx, next) => {
 
     let file = await new Promise((resolve, reject) => {
-        fs.readFile('E:/work/TOOLSWEB/toolsWeb/uploaded/dnNLPPSamnze4QUbMRUhS9wK.xlsx', function (err, data) {
+        fs.readFile('E:/work/TOOLSWEB/toolsWeb/uploaded/AyBg9l-dghVfwRoHGc5RfnSC.rar', function (err, data) {
             if (err) {
                 console.log(err);
                 reject(err);
@@ -93,7 +207,7 @@ router.get('/autoFile', async (ctx, next) => {
     let rs = await new Promise((resolve, reject) => {
         // fs.mkdir(i.dirPath + i.dirName, function (error) {
 
-        fs.writeFile("//192.168.0.5/工程资料管理库/13-WS-文书资料——工作报告  年终（中） 报告  会议记录  ISO文件 编码原则 标准 产品履历 发行资料 组织岗位 证书资料 统计资料 人员档案信息/0-工作报告——周月报 出差报告 观展报告 年度总结 测试报告/00-周月报告/output1.xlsx", file, function (err) {
+        fs.writeFile("E:/autoFiles/hd/test.rar", file, function (err) {
             if (err) {
                 console.log(err);
                 reject(err);
