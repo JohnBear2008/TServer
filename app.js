@@ -7,6 +7,11 @@ const fs = require('fs');
 
 
 
+//引入自定义跨域组件,一定要用在最前面
+const divCors = require('./funs/cors')
+app.use(divCors);
+
+
 //文件上传组件
 const koaBody = require('koa-body'); //此组件同koa-bodyparser 冲突 不能同时启用,启用此组件,可替换koa-bodyparser
 app.use(koaBody({
@@ -16,9 +21,6 @@ app.use(koaBody({
 // const bodyParser = require('koa-bodyparser'); //用来解析request中的body，针对post请求
 // app.use(bodyParser())
 
-//引入自定义跨域组件
-const divCors = require('./funs/cors')
-app.use(divCors);
 
 // //jwt 组件
 // const koajwt = require('koa-jwt');

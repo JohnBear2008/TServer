@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-11 15:14:07
- * @LastEditTime: 2021-05-12 10:32:48
+ * @LastEditTime: 2021-05-12 18:00:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\ppm\autoFile.js
@@ -123,11 +123,11 @@ const placeOnFile = async ({
     return dr
 }
 
-placeOnFile({
-    pathArr: ["1", "2", "3"], //路径数组
-    fileName: '1.txt', //文件名
-    fileData: '1111' //文件数据
-})
+// placeOnFile({
+//     pathArr: ["1", "2", "3"], //路径数组
+//     fileName: '1.txt', //文件名
+//     fileData: '1111' //文件数据
+// })
 
 //定义api前缀
 var router = new Router({
@@ -138,19 +138,19 @@ var router = new Router({
 
 //接口测试
 router.get('/', async (ctx, next) => {
-    let dr = await new Promise((resolve, reject) => {
-        // fs.mkdir(i.dirPath + i.dirName, function (error) {
-        fs.mkdir('E:/ppmtest', function (error) {
-            if (error) {
-                console.log(error);
-                reject(false);
-            }
-            resolve(true)
-            console.log('创建目录成功');
-        })
-    })
+    // let dr = await new Promise((resolve, reject) => {
+    //     // fs.mkdir(i.dirPath + i.dirName, function (error) {
+    //     fs.mkdir('E:/ppmtest', function (error) {
+    //         if (error) {
+    //             console.log(error);
+    //             reject(false);
+    //         }
+    //         resolve(true)
+    //         console.log('创建目录成功');
+    //     })
+    // })
     next()
-    ctx.response.body = '<h1>ppm接口测试' + dr + '</h1>';
+    ctx.response.body = '<h1>ppm接口测试</h1>';
 });
 
 //接口测试

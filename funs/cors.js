@@ -13,10 +13,10 @@ const divCors = cors({
         //     return "*"; // 允许来自所有域名请求
         // }
         return '*' //允许所有
-        // return 'http://localhost:3000'//允许本地请求3000,
+        // return 'http://127.0.0.1:2019' //允许本地请求3000,
     },
     maxAge: 5, //指定本次预检请求的有效期，单位为秒。
-    credentials: true, //是否允许发送Cookie
+    credentials: true, //是否允许发送Cookie,如果要发送 Cookie，Access-Control-Allow-Origin就不能设置为*，需要设置为请求网页一致的域名。同时，Cookie 遵循同源政策。
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
