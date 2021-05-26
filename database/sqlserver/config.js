@@ -1,12 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2021-01-18 13:02:32
- * @LastEditTime: 2021-04-27 17:54:54
+ * @LastEditTime: 2021-05-25 15:15:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\database\sqlserver\config.js
  */
-////T9 测试服
+// //T9 测试服
 // module.exports = {
 //     user: 'sa',
 //     password: '338168',
