@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-11 15:14:07
- * @LastEditTime: 2021-05-12 18:00:13
+ * @LastEditTime: 2021-05-31 14:23:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\ppm\autoFile.js
@@ -9,11 +9,15 @@
 // 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
 
-//引入mysql数据库模块
-const mysql = require('../../../database/mysql')
+// //引入mysql数据库模块
+// const mysql = require('../../../database/mysql')
 
 //引入文件模块
 const fs = require('fs');
+
+//共用参数
+const ppmUploadedAdr = 'E:/work/TOOLSWEB/toolsWeb/uploaded/' //读取目录
+const pathPre = 'E:/test' //归档地址
 
 
 const checkFolder = async ({
@@ -85,8 +89,7 @@ const placeOnFile = async ({
     fileName, //文件名
     fileData //文件数据
 }) => {
-    //v
-    let pathPre = 'E:/test'
+
     //c
     if (!pathArr || !fileName || !fileData) {
         console.log('placeOnFile 参数不足!');
@@ -123,6 +126,23 @@ const placeOnFile = async ({
     return dr
 }
 
+
+const getFile = async (fileKey) => {
+    let file = await new Promise((resolve, reject) => {
+        fs.readFile(ppmUploadedAdr + fileKey, function (err, data) {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            resolve(data)
+            console.log('read成功');
+        })
+    })
+
+    return file
+}
+
+
 // placeOnFile({
 //     pathArr: ["1", "2", "3"], //路径数组
 //     fileName: '1.txt', //文件名
@@ -138,86 +158,92 @@ var router = new Router({
 
 //接口测试
 router.get('/', async (ctx, next) => {
-    // let dr = await new Promise((resolve, reject) => {
-    //     // fs.mkdir(i.dirPath + i.dirName, function (error) {
-    //     fs.mkdir('E:/ppmtest', function (error) {
-    //         if (error) {
-    //             console.log(error);
-    //             reject(false);
-    //         }
-    //         resolve(true)
-    //         console.log('创建目录成功');
-    //     })
-    // })
     next()
     ctx.response.body = '<h1>ppm接口测试</h1>';
 });
 
-//接口测试
-router.get('/read', async (ctx, next) => {
-    let dr = await new Promise((resolve, reject) => {
-        // fs.mkdir(i.dirPath + i.dirName, function (error) {
-        fs.readFile('E:/ppmtest/test.txt', function (err, data) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            resolve(data)
-            console.log('read成功');
-        })
-    })
-    next()
-    ctx.response.body = '<h1>ppm读取' + dr + '</h1>';
-});
+// //接口测试
+// router.get('/read', async (ctx, next) => {
+//     let dr = await new Promise((resolve, reject) => {
+//         // fs.mkdir(i.dirPath + i.dirName, function (error) {
+//         fs.readFile('E:/ppmtest/test.txt', function (err, data) {
+//             if (err) {
+//                 console.log(err);
+//                 reject(err);
+//             }
+//             resolve(data)
+//             console.log('read成功');
+//         })
+//     })
+//     next()
+//     ctx.response.body = '<h1>ppm读取' + dr + '</h1>';
+// });
+
+// //接口测试
+// router.get('/write', async (ctx, next) => {
+//     let dr = await new Promise((resolve, reject) => {
+//         // fs.mkdir(i.dirPath + i.dirName, function (error) {
+
+//         fs.writeFile("E:/ppmtest/output.txt", "Hello World!", function (err) {
+//             if (err) {
+//                 console.log(err);
+//                 reject(err);
+//             }
+//             resolve(true)
+//             console.log('write成功');
+//         });
+//     })
+//     next()
+//     ctx.response.body = '<h1>ppm写入' + dr + '</h1>';
+// });
 
 //接口测试
-router.get('/write', async (ctx, next) => {
-    let dr = await new Promise((resolve, reject) => {
-        // fs.mkdir(i.dirPath + i.dirName, function (error) {
+router.post('/autoFile', async (ctx, next) => {
+    //v
+    let rs = '归档成功'
 
-        fs.writeFile("E:/ppmtest/output.txt", "Hello World!", function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            resolve(true)
-            console.log('write成功');
-        });
-    })
+    //d-获取归档序列
+    console.log('autoFile', ctx.request.body);
+    let tasks = ctx.request.body.tasks;
+    let autoFileArr = [];
+    for (const n of tasks) {
+        let nTaskFiles = JSON.parse(n.taskFiles);
+        for (const file of nTaskFiles) {
+            autoFileArr.push({
+                taskCTRName: n.taskCTRName,
+                taskMHEName: n.taskMHEName,
+                taskModel: n.taskModel,
+                modifyContent: n.modifyContent,
+                fileName: file.fileName,
+                fileKey: file.fileKey,
+            })
+        }
+    }
+    console.log('autoFileArr', autoFileArr);
+
+    //d-归档
+    try {
+        for (const n of autoFileArr) {
+            let pathArr = [n.taskCTRName, n.taskMHEName, n.taskModel];
+            let file = await getFile(n.fileKey)
+            placeOnFile({
+                pathArr: pathArr, //路径数组
+                fileName: n.fileName, //文件名
+                fileData: file //文件数据
+            })
+
+            placeOnFile({
+                pathArr: pathArr, //路径数组
+                fileName: '修改说明.txt', //文件名
+                fileData: n.modifyContent //文件数据
+            })
+        }
+    } catch (error) {
+        rs = error
+    }
+
     next()
-    ctx.response.body = '<h1>ppm写入' + dr + '</h1>';
-});
-
-//接口测试
-router.get('/autoFile', async (ctx, next) => {
-
-    let file = await new Promise((resolve, reject) => {
-        fs.readFile('E:/work/TOOLSWEB/toolsWeb/uploaded/AyBg9l-dghVfwRoHGc5RfnSC.rar', function (err, data) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            resolve(data)
-            console.log('read成功');
-        })
-    })
-
-    console.log('file', file);
-
-    let rs = await new Promise((resolve, reject) => {
-        // fs.mkdir(i.dirPath + i.dirName, function (error) {
-
-        fs.writeFile("E:/autoFiles/hd/test.rar", file, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            resolve(true)
-            console.log('auto write成功');
-        });
-    })
-    next()
-    ctx.response.body = '<h1>auto write成功' + rs + '</h1>';
+    ctx.response.body = rs;
 });
 
 
