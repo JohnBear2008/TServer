@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-11 15:14:07
- * @LastEditTime: 2021-05-31 14:23:49
+ * @LastEditTime: 2021-05-31 14:56:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\ppm\autoFile.js
@@ -226,13 +226,12 @@ router.post('/autoFile', async (ctx, next) => {
         for (const n of autoFileArr) {
             let pathArr = [n.taskCTRName, n.taskMHEName, n.taskModel];
             let file = await getFile(n.fileKey)
-            placeOnFile({
+            await placeOnFile({
                 pathArr: pathArr, //路径数组
                 fileName: n.fileName, //文件名
                 fileData: file //文件数据
             })
-
-            placeOnFile({
+            await placeOnFile({
                 pathArr: pathArr, //路径数组
                 fileName: '修改说明.txt', //文件名
                 fileData: n.modifyContent //文件数据
