@@ -18,6 +18,16 @@ app.use(koaBody({
     multipart: true
 }));
 
+const Router = require('koa-router');
+const router = new Router();
+
+// 意思是：如果你访问的是根(localhost:3000/test/t1)，要怎么处理，你去找 './router/test/t1'
+router.use('/test/t1', require('./router/test/t1'));
+router.use('/api', require('./router/api'));
+
+
+app.use(router.routes())
+
 // const bodyParser = require('koa-bodyparser'); //用来解析request中的body，针对post请求
 // app.use(bodyParser())
 
@@ -69,6 +79,8 @@ app.use(apiConfigRouter.routes());
 app.use(apiFoilRouter.routes());
 
 
+
+
 const apiMysql = require('./router/api/mysql')
 app.use(apiMysql.routes());
 
@@ -87,8 +99,8 @@ app.use(apiSMS.routes());
 const apiMail = require('./router/api/mail')
 app.use(apiMail.routes());
 
-const apiT9 = require('./router/api/T9')
-app.use(apiT9.routes());
+// const apiT9 = require('./router/api/T9')
+// app.use(apiT9.routes());
 
 const apiPPM = require('./router/api/ppm')
 app.use(apiPPM.routes());

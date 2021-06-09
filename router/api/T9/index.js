@@ -13,9 +13,9 @@ const util = require('../../../funs/util')
 
 
 //定义api前缀
-var router = new Router({
-    prefix: '/api/T9'
-})
+const router = new Router()
+
+router.use('/test', require('./routes/test'))
 
 //接口测试
 router.get('/', async (ctx, next) => {
@@ -23,42 +23,7 @@ router.get('/', async (ctx, next) => {
     ctx.response.body = '<h1>T9接口测试</h1>';
 });
 
-//get 通用接口
-router.get('/ajaxGet', async (ctx, next) => {
 
-    let {
-        to,
-        sql,
-        params
-    } = ctx.request.query;
-
-    console.log('getBySql22222', to, sql, params);
-    //c
-    if (!to) {
-        ctx.response.body = {
-            error: 'to 参数未设定!'
-        };
-    }
-
-    let sqlParams = params ? params.split(',') : [];
-
-    let rs = await sqlserver.execute({
-        sql: sqlDict[sql],
-        params: sqlParams
-    })
-
-    console.log('getBySql rs', rs.recordset);
-    let data = rs.recordset;
-    data = dict.translater({
-        data,
-        to
-    })
-
-    console.log('data', data);
-
-    next()
-    ctx.response.body = data;
-});
 
 //getData 接口
 router.get('/getData', async (ctx, next) => {
@@ -681,4 +646,4 @@ router.post('/addMaterial', async (ctx, next) => {
 
 });
 
-module.exports = router
+module.exports = router.routes()
