@@ -5,7 +5,10 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 
-
+// //ip组件测试
+// const ip=require('./funs/ip')
+// console.log('内网ip：'+ip.getLocalIP());
+// console.log('外网ip：'+ip.getPublicIP());
 
 //引入自定义跨域组件,一定要用在最前面
 const divCors = require('./funs/cors')

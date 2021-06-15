@@ -10,6 +10,7 @@ const Router = require('koa-router');
 //定义api前缀
 var router = new Router()
 router.use('/t9', require('./t9'))
+router.use('/edgeserver', require('./edgeServer/server'))
 
 
 module.exports = router.routes()
