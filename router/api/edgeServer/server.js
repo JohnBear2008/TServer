@@ -33,9 +33,9 @@ const initServer = async (server_ip) => {
         })
     })
 
-    // console.log("regServerIp", regServerIp);
+    console.log("regServerIp", regServerIp);
 
-    if (regServerIp.server_ip) {
+    if (regServerIp) {
         return
     }
     // 插入单项
