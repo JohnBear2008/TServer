@@ -102,11 +102,7 @@ app.use(apiSMS.routes());
 const apiMail = require('./router/api/mail')
 app.use(apiMail.routes());
 
-// const apiT9 = require('./router/api/T9')
-// app.use(apiT9.routes());
 
-const apiPPM = require('./router/api/ppm')
-app.use(apiPPM.routes());
 
 const apiHoliday = require('./router/api/holiday')
 app.use(apiHoliday.routes());
