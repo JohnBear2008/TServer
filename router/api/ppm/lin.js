@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-11 15:14:07
- * @LastEditTime: 2021-06-16 17:27:40
+ * @LastEditTime: 2021-06-18 14:07:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\ppm\autoFile.js
@@ -22,13 +22,13 @@ const smbConfig = {
     password: '338168'
 }
 
-const smb2Client = new SMB2(smbConfig);
+// const smb2Client = new SMB2(smbConfig);
 
-smb2Client.writeFile('PPMPROGRAM\\7AK(杭州爱科)\\55\\2021\\DSP\\立式注塑机\\PILOT5580' + '\\' + '1.txt', '333333333', function (err) {
-    if (err) throw err;
-    // resolve(true)
-    console.log('write成功');
-});
+// smb2Client.writeFile('PPMPROGRAM\\7AK(杭州爱科)\\55\\2021\\DSP\\立式注塑机\\PILOT5580' + '\\' + '1.txt', '333333333', function (err) {
+//     if (err) throw err;
+//     // resolve(true)
+//     console.log('write成功');
+// });
 
 // // // smb2Client.readFile('PPMPROGRAM\\b.txt', function (err, data) {
 // // //     if (err) throw err;
@@ -204,15 +204,18 @@ router.post('/autoFile', async (ctx, next) => {
     let rs = '归档成功'
 
     //d-获取归档序列
-    // console.log('autoFile', ctx.request.body);
-    let autoFileArr = ctx.request.body.autoFileArr;
+    console.log('autoFile', ctx.request.body);
 
-    // console.log('autoFileArr',autoFileArr);
+    let autoFileArr = JSON.parse(ctx.request.body.autoFileArr);
+
+
+    console.log('autoFileArr', autoFileArr);
 
 
     //d-归档
     try {
         for (const n of autoFileArr) {
+
             let pathArr = n.filePath;
             let file = await getFile(n.fileKey)
             // console.log('n', n);
