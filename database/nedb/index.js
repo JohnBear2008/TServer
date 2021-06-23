@@ -39,15 +39,45 @@ const insertDB = async ({
                 reject(err)
             }
             if (ret) {
-                resolve(ret)
+                console.log('insertDB ret', ret);
+                resolve(true)
+            } else {
+                resolve(false)
             }
         });
     })
 
-    // console.log('res', res);
+    console.log('insertDB res', res);
 
     return res;
 }
+
+
+const isExist = async ({
+    name,
+    filter
+}) => {
+    console.log('findOneDB filter', filter);
+    let db = await getDB(name);
+    // console.log('db', db);
+    // 插入单项
+    let res = await new Promise((resolve, reject) => {
+        db.findOne(filter, (err, ret) => {
+            if (err) {
+                console.log('isExist err', err);
+                reject(err)
+            }
+            if (ret) {
+                console.log('isExist ret', ret);
+                resolve(true)
+            } else {
+                resolve(false)
+            }
+        });
+    })
+    return res;
+}
+
 
 const findOneDB = async ({
     name,
@@ -60,10 +90,15 @@ const findOneDB = async ({
     let res = await new Promise((resolve, reject) => {
         db.findOne(filter, (err, ret) => {
             if (err) {
+                console.log('findOneDB err', err);
                 reject(err)
             }
             if (ret) {
+                console.log('findOneDB ret', ret);
                 resolve(ret)
+            } else {
+                console.log('findOneDB null')
+                resolve(null)
             }
         });
     })
@@ -89,6 +124,7 @@ const findDB = async ({
             }
         });
     })
+
     return res;
 }
 
@@ -108,12 +144,18 @@ const updateOneDB = async ({
                 reject(err)
             }
             if (ret) {
-                resolve(ret)
+                console.log('updateOneDB ret', ret);
+                resolve(true)
+            } else {
+                resolve(false)
             }
         });
     })
+    console.log('updateOneDB', res);
     return res;
 }
+
+
 
 const deleteDB = async ({
     name,
@@ -144,5 +186,6 @@ module.exports = {
     findOneDB,
     findDB,
     updateOneDB,
-    deleteDB
+    deleteDB,
+    isExist
 }
