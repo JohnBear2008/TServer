@@ -108,19 +108,21 @@ const findOneDB = async ({
 
 const findDB = async ({
     name,
-    data
+    filter
 }) => {
     console.log('findDB', name);
     let db = await getDB(name);
     // console.log('db', db);
     // 插入单项
     let res = await new Promise((resolve, reject) => {
-        db.find(data, (err, ret) => {
+        db.find(filter, (err, ret) => {
             if (err) {
                 reject(err)
             }
             if (ret) {
                 resolve(ret)
+            } else {
+                resolve([])
             }
         });
     })

@@ -4,11 +4,17 @@ const nedb = require('../../../../database/nedb')
 
 
 //接口测试
-router.get('/', async (ctx, next) => {
+router.get('/get', async (ctx, next) => {
+    console.log('get', ctx.request.body);
+    let findRS = await nedb.findDB({
+        name: 'projectAdmin_projects',
+        filter: ctx.request.body.filter
+    })
+
+    console.log('findRS', findRS);
     next()
-    ctx.response.body = {
-        data: 'route projectAdmin_projects/projects'
-    };
+    ctx.response.body = findRS
+
 });
 
 //接口测试
