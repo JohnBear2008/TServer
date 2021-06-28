@@ -171,10 +171,14 @@ const deleteDB = async ({
             multi: true
         }, (err, ret) => {
             if (err) {
+                console.log('deleteDB err',err);
                 reject(err)
             }
             if (ret) {
-                resolve(ret)
+                console.log('deleteDB ret', ret);
+                resolve(true)
+            } else {
+                resolve(false)
             }
         });
     })

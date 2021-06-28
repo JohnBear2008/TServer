@@ -73,4 +73,29 @@ router.post('/save', async (ctx, next) => {
 });
 
 
+//接口测试
+router.post('/delete', async (ctx, next) => {
+    console.log('delete', ctx.request.body);
+    let idArr = ctx.request.body.idArr
+    let filter = {
+        id: {
+            $in: idArr
+        }
+    }
+    let rs = {};
+    let removeRs = await nedb.deleteDB({
+        name: 'projectAdmin_projects',
+        filter: filter,
+        data: ctx.request.body
+    })
+    rs = removeRs ? {
+        result: 'success'
+    } : {
+        result: 'fail'
+    }
+
+    next()
+    ctx.response.body = rs
+});
+
 module.exports = router.routes()
