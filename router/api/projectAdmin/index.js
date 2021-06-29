@@ -5,6 +5,8 @@ const router = new Router()
 
 router.use('/projects', require('./routes/projects'))
 router.use('/schedules', require('./routes/schedules'))
+router.use('/inputs', require('./routes/inputs'))
+router.use('/outputs', require('./routes/outputs'))
 
 
 module.exports = router.routes()

@@ -1,0 +1,9 @@
+{"projectId":5,"projectName":"新项目5","makeDate":"2021-06-29","inputType":"人员","inputClass":"出差费","label":"投入名称","price":"300","num":1,"desc":"描述备注","_id":"8EiKZ0xMKwJfmPrv"}
+{"projectId":2,"projectName":"新项目2","makeDate":"2021-06-29","inputType":"资产","inputClass":"资产","label":"投入名称","price":"2222","num":1,"desc":"描述备注","_id":"Gh7dNefqfWYwLxqp"}
+{"projectId":3,"projectName":"新项目3","makeDate":"2021-06-29","inputType":"人员","inputClass":"出差费","label":"投入名称","price":"400","num":1,"desc":"描述备注","_id":"I62ONQCO0lwpJbhC"}
+{"projectId":2,"projectName":"新项目2","makeDate":"2021-06-29","inputType":"资产","inputClass":"资产","label":"投入名称55","price":"333","num":1,"desc":"描述备注","_id":"MDAYsvuzplmR68Ib"}
+{"projectId":"2_1","projectName":"新子项目","makeDate":"2021-06-29","inputType":"人员","inputClass":"工时","label":"投入名称","price":"333","num":1,"desc":"描述备注","_id":"OMAUg4ZyDkyEHFPe"}
+{"projectId":"2_1","projectName":"新子项目","makeDate":"2021-06-29","inputType":"人员","inputClass":"培训费","label":"投入名称","price":"333","num":1,"desc":"描述备注","_id":"OV0XaG8SzysZugLq"}
+{"projectId":5,"projectName":"新项目5","makeDate":"2021-06-29","inputType":"物料","inputClass":"物料采购","label":"投入名称","price":"2222","num":1,"desc":"描述备注","_id":"Q9Z72RBiEKHk952a"}
+{"projectId":5,"projectName":"新项目5","makeDate":"2021-06-29","inputType":"物料","inputClass":"物料采购","label":"投入名称","price":"500","num":1,"desc":"描述备注","_id":"p5ReeQEJvhU9jpBu"}
+{"projectId":3,"projectName":"新项目3","makeDate":"2021-06-29","inputType":"人员","inputClass":"工时","label":"投入名称","price":"600","num":1,"desc":"描述备注","_id":"wyfuomwfJpGChqV4"}
