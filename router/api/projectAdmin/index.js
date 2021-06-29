@@ -4,7 +4,7 @@ const router = new Router()
 
 
 router.use('/projects', require('./routes/projects'))
-
+router.use('/schedule', require('./routes/schedule'))
 
 
 module.exports = router.routes()

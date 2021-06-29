@@ -1,5 +1,4 @@
-{"id":1,"projectName":"test","region":"上海","applyDate":"2021-06-25","describe":"新项目说明 ","_id":"KkcNZqtcOM7JnNuf","children":[]}
 {"id":3,"projectName":"新项目3","region":"宁波","applyDate":"2021-06-25","describe":"新项目说明 ","_id":"WCffTjQXO2Q5agKo","children":[]}
 {"id":5,"projectName":"新项目5","region":"宁波","applyDate":"2021-06-28","describe":"新项目说明 ","_id":"nxkIYmPXzMPQfrOB"}
-{"id":2,"projectName":"新项目2","region":"宁波","applyDate":"2021-06-25","describe":"新项目说明 ","_id":"sNeLEH5sekOKSLEu","children":[]}
+{"id":2,"projectName":"新项目2","region":"宁波","applyDate":"2021-06-25","describe":"新项目说明 ","_id":"sNeLEH5sekOKSLEu","children":[{"id":"2_1","fatherId":2,"projectName":"新子项目","region":"宁波","applyDate":"2021-06-29","describe":"新子项目说明 "}]}
 {"id":14,"projectName":"111111","region":"宁波","applyDate":"2021-06-28","describe":"新项目说明 ","_id":"vBNvd5grFTlXh9ke"}
