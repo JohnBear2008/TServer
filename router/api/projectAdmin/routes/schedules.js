@@ -7,7 +7,7 @@ const nedb = require('../../../../database/nedb')
 router.get('/get', async (ctx, next) => {
     console.log('get', ctx.request.body);
     let findRS = await nedb.findDB({
-        name: 'projectAdmin_schedule',
+        name: 'projectAdmin_schedules',
         filter: ctx.request.body.filter
     })
 
@@ -22,7 +22,7 @@ router.post('/insert', async (ctx, next) => {
     console.log('insert', ctx.request.body);
 
     nedb.insertDB({
-        name: 'projectAdmin_schedule',
+        name: 'projectAdmin_schedules',
         data: ctx.request.body
     })
     next()
@@ -36,11 +36,11 @@ router.post('/insert', async (ctx, next) => {
 router.post('/save', async (ctx, next) => {
     console.log('save', ctx.request.body);
     let filter = {
-        id: ctx.request.body.id
+        _id: ctx.request.body._id
     }
 
     let isExistRS = await nedb.isExist({
-        name: 'projectAdmin_schedule',
+        name: 'projectAdmin_schedules',
         filter: filter
     })
 
@@ -48,7 +48,7 @@ router.post('/save', async (ctx, next) => {
     let rs = {};
     if (isExistRS) {
         let updateRs = await nedb.updateOneDB({
-            name: 'projectAdmin_schedule',
+            name: 'projectAdmin_schedules',
             filter: filter,
             data: ctx.request.body
         })
@@ -59,7 +59,7 @@ router.post('/save', async (ctx, next) => {
         }
     } else {
         let insertRs = await nedb.insertDB({
-            name: 'projectAdmin_schedule',
+            name: 'projectAdmin_schedules',
             data: ctx.request.body
         })
         rs = insertRs ? {
@@ -78,13 +78,13 @@ router.post('/delete', async (ctx, next) => {
     console.log('delete', ctx.request.body);
     let idArr = ctx.request.body.idArr
     let filter = {
-        id: {
+        _id: {
             $in: idArr
         }
     }
     let rs = {};
     let removeRs = await nedb.deleteDB({
-        name: 'projectAdmin_schedule',
+        name: 'projectAdmin_schedules',
         filter: filter,
         data: ctx.request.body
     })
