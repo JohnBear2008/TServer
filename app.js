@@ -27,6 +27,7 @@ const router = new Router();
 // 意思是：如果你访问的是根(localhost:3000/test/t1)，要怎么处理，你去找 './router/test/t1'
 router.use('/test/t1', require('./router/test/t1'));
 router.use('/api', require('./router/api'));
+router.use('/tweb', require('./router/tweb'));
 
 
 app.use(router.routes())
