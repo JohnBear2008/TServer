@@ -42,6 +42,33 @@ router.post('/insert', async (ctx, next) => {
     };
 });
 
+//接口测试
+router.post('/updatePassword', async (ctx, next) => {
+    console.log('save', ctx.request.body);
+    let filter = {
+        user: ctx.request.body.user
+    }
+    let isExistRS = await nedb.isExist({
+        name: 'tweb_users',
+        filter: filter
+    })
+    console.log('isExistRS', isExistRS);
+    let rs = {};
+    if (isExistRS) {
+        let updateRs = await nedb.updateOneDB({
+            name: 'tweb_users',
+            filter: filter,
+            data: ctx.request.body
+        })
+        rs = updateRs ? {
+            result: 'success'
+        } : {
+            result: 'fail'
+        }
+    }
+    next()
+    ctx.response.body = rs
+});
 
 //接口测试
 router.post('/save', async (ctx, next) => {
