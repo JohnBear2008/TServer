@@ -1124,6 +1124,14 @@ performance-now@^2.1.0:
   resolved "https://registry.npm.taobao.org/performance-now/download/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
+ping@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.npm.taobao.org/ping/download/ping-0.4.1.tgz#1436575a39baafe3ed2b76f6a116c51780f32299"
+  integrity sha1-FDZXWjm6r+PtK3b2oRbFF4DzIpk=
+  dependencies:
+    q "1.x"
+    underscore "^1.12.0"
+
 printj@~1.1.0, printj@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/printj/download/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
@@ -1144,7 +1152,7 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.npm.taobao.org/punycode/download/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha1-tYsBCsQMIsVldhbI0sLALHv0eew=
 
-q@^1.1.2:
+q@1.x, q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.npm.taobao.org/q/download/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
@@ -1384,6 +1392,11 @@ type-is@^1.6.14, type-is@^1.6.16:
   version "1.12.0"
   resolved "https://registry.npm.taobao.org/underscore/download/underscore-1.12.0.tgz?cache=0&sync_timestamp=1606179437532&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Funderscore%2Fdownload%2Funderscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
   integrity sha1-SBSUBVH8gFh873hA0euw8WRTvpc=
+
+underscore@^1.12.0:
+  version "1.13.1"
+  resolved "https://registry.npm.taobao.org/underscore/download/underscore-1.13.1.tgz?cache=0&sync_timestamp=1618502952302&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Funderscore%2Fdownload%2Funderscore-1.13.1.tgz#0c1c6bd2df54b6b69f2314066d65b6cde6fcf9d1"
+  integrity sha1-DBxr0t9UtrafIxQGbWW2zeb8+dE=
 
 underscore@~1.4.4:
   version "1.4.4"

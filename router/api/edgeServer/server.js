@@ -1,17 +1,11 @@
-/*
- * @Author: your name
- * @Date: 2021-01-29 10:07:12
- * @LastEditTime: 2021-06-09 16:54:50
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\index.js
- */
-// 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
 const router = new Router()
 const server_ip = require('./config').server_ip;
-
 const nedb = require('nedb')
+const ping = require('ping');
+
+
+const hosts = ['10.15.0.1'];
 
 const initServer = async (server_ip) => {
     const db = new nedb({
@@ -54,5 +48,30 @@ router.get('/', async (ctx, next) => {
     next()
     ctx.response.body = '<h1>edgeServer连接测试,' + server_ip + '</h1>';
 });
+
+
+router.get('/ping', async (ctx, next) => {
+    let pingRs = []
+
+    for (let host of hosts) {
+        // WARNING: -i 2 argument may not work in other platform like windows
+        let res = await ping.promise.probe(host, {
+            timeout: 10,
+            extra: ['-i', '2'],
+        });
+        console.log(res);
+        pingRs.push({
+            host: res.host,
+            alive: res.alive
+        })
+    }
+    next()
+    ctx.response.body = pingRs;
+});
+
+
+
+
+
 
 module.exports = router.routes()
