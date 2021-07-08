@@ -8,7 +8,8 @@ router.get('/get', async (ctx, next) => {
     console.log('get', ctx.request.body);
     let findRS = await nedb.findDB({
         name: 'projectAdmin_projects',
-        filter: ctx.request.body.filter
+        filter: ctx.request.body.filter,
+        sort: ctx.request.body.sort
     })
 
     console.log('findRS', findRS);

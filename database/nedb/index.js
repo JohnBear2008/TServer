@@ -108,14 +108,18 @@ const findOneDB = async ({
 
 const findDB = async ({
     name,
-    filter
+    filter,
+    sort
 }) => {
     console.log('findDB', name);
     let db = await getDB(name);
     // console.log('db', db);
+    let filterParam = filter ? filter : {};
+    let sortParam = sort ? sort : {};
     // 插入单项
     let res = await new Promise((resolve, reject) => {
-        db.find(filter, (err, ret) => {
+        db.find(filterParam).sort(sortParam).exec(function (err, ret) {
+            // db.find(filter, (err, ret) => {
             if (err) {
                 reject(err)
             }
@@ -171,7 +175,7 @@ const deleteDB = async ({
             multi: true
         }, (err, ret) => {
             if (err) {
-                console.log('deleteDB err',err);
+                console.log('deleteDB err', err);
                 reject(err)
             }
             if (ret) {
