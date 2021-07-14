@@ -6,12 +6,12 @@
  * @Description: In User Settings Edit
  * @FilePath: \TServer\router\api\T9\dict\index.js
  */
-const RP = require('./RP')
+const rp = require('./rp')
 const util = require('../../../../funs/util')
 
 
 const lib = {
-    RP: RP
+    rp: rp
 }
 
 const getDict = ({

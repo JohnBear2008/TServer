@@ -15,4 +15,12 @@ router.use('/ppm', require('./ppm'))
 router.use('/edgeserver', require('./edgeServer/server'))
 
 
+//接口测试
+router.get('/', async (ctx, next) => {
+    console.log('api get', ctx.request.query);
+    next()
+    ctx.response.body = 'sucess';
+});
+
+
 module.exports = router.routes()

@@ -22,6 +22,7 @@ router.use('/lin', require('./lin'))
 
 //接口测试
 router.get('/', async (ctx, next) => {
+    console.log('ppm get', ctx.request.query);
     next()
     ctx.response.body = '<h1>ppm接口测试</h1>';
 });

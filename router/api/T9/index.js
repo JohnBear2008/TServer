@@ -25,6 +25,7 @@ router.use('/addMaterial', require('./write/addMaterial'))
 
 //接口测试
 router.get('/', async (ctx, next) => {
+    console.log('t9 get', ctx.request.query);
     next()
     ctx.response.body = '<h1>T9接口测试</h1>';
 });
