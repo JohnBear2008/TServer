@@ -68,7 +68,7 @@ app.use(router.routes())
 // app.use(cors())
 
 // 注意require('koa-router')返回的是函数:
-const routerDiv = require('./router')
+// const routerDiv = require('./router')
 const userRouter = require('./router/user')
 const apiFileRouter = require('./router/api/file')
 const apiConfigRouter = require('./router/api/configs')
@@ -76,13 +76,11 @@ const apiFoilRouter = require('./router/api/foil')
 
 
 // add router middleware:
-app.use(routerDiv.routes());
+// app.use(routerDiv.routes());
 app.use(userRouter.routes());
 app.use(apiFileRouter.routes());
 app.use(apiConfigRouter.routes());
 app.use(apiFoilRouter.routes());
-
-
 
 
 const apiMysql = require('./router/api/mysql')
