@@ -226,7 +226,7 @@ router.post('/autoFile', async (ctx, next) => {
             })
             await placeOnFile({
                 pathArr: pathArr, //路径数组
-                fileName: n.fileName+'修改说明.txt', //文件名
+                fileName: '修改说明.txt', //文件名
                 fileData: n.modifyContent //文件数据
             })
         }
