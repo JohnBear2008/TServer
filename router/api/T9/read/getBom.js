@@ -1,19 +1,4 @@
-/*
- * @Author: your name
- * @Date: 2021-06-09 16:18:11
- * @LastEditTime: 2021-06-09 16:28:40
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\read\getMaterial.js
- */
-/*
- * @Author: your name
- * @Date: 2021-06-09 14:59:17
- * @LastEditTime: 2021-06-09 16:09:41
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\routes\test.js
- */
+
 // 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
 const router = new Router()
@@ -34,9 +19,7 @@ router.get('/', async (ctx, next) => {
     console.log('getBom', to, UID);
     //c
     if (!to) {
-        ctx.response.body = {
-            error: 'to 参数未设定!'
-        };
+        to = 'T9'
     }
 
     let mainSql = sqlDict['getBom'];
@@ -48,7 +31,6 @@ router.get('/', async (ctx, next) => {
             case 'String':
                 filterArr = UID.split(',');
                 break;
-
             case 'Array':
                 filterArr = UID
                 break;
@@ -70,7 +52,7 @@ router.get('/', async (ctx, next) => {
         sql: executeSql
     })
 
-    // console.log('getPerson rs', rs.recordset);
+    console.log('getBom rs', rs.recordset);
     let data = rs.recordset;
     let type = 'bom';
 

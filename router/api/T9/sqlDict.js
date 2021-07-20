@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-01-29 15:32:56
- * @LastEditTime: 2021-05-25 14:09:49
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\sqlDict.js
- */
 const addMaterial = "insert into comMaterialGroup ( MaterialId,MaterialName,MaterialCategoryId,HasComboProd,UnitId,X_Supplier,X_MatVersion,MaterialSpec) values ( ${MaterialId}, ${MaterialName}, ${MaterialCategoryId}, ${HasComboProd}, ${UnitId}, ${X_Supplier}, ${X_MatVersion}, ${MaterialSpec})"
 
 const getProductsSelector = "select MaterialSpec as value,MaterialSpec+','+MaterialName AS 'option',MaterialId as token from comMaterialGroup"
@@ -16,7 +8,7 @@ const getCustomer = "select * from ( SELECT DISTINCT  ta.BizPartnerId as UID,ta.
 
 const getPerson = "select * from ( SELECT ta.PersonId AS UID,ta.PersonId,ta.PersonName,case ta.Sex  WHEN 0 then '男' WHEN 1 then '女' end as Sex ,ta.Birthday,ta.Phone,ta.HomePhone,ta.OrigHomeplace,ta.CU_MailingAddress,tb.IDNo,tb.InductionDate,td.EducationName,tc.DeptName FROM comGroupPerson ta,comPerson tb,comDepartment tc,hrmEducation td WHERE  ta.PersonId=tb.PersonId AND tb.DeptId=tc.DeptId AND ta.HighestEduId=td.EducationId AND  tb.ServiceStatus=15 AND  tc.DeptName not in ('董事长室') ) TA"
 
-const getBom = "select * from BOMSubMatInfo"
+const getBom = "select * from (SELECT ta.BOMKeyId as UID, ta.BOMKeyId,ta.SubMaterialId,ta.SubMaterialSpec,ta.UnitQty, CASE WHEN tb.BOMKeyId is null THEN 0 ELSE 1 END  AS hasChildren FROM BOMSubMatInfo ta left join BOMMainInfo tb ON ta.SubMaterialId=tb.BOMKeyId) TA"
 
 const getInstallInfo = "SELECT * FROM (SELECT TAA.BOMKeyId,TAA.SubMaterialId,TAA.UnitQty,TAA.Describe,TAA.Remark,TAA.productId,TC.CU_OldMaterialId AS partId  FROM (SELECT TA.BOMKeyId,TA.SubMaterialId,TA.UnitQty,TA.Describe,TA.Remark,TB.CU_OldMaterialId AS productId FROM (SELECT ta.BOMKeyId,ta.SubMaterialId,ta.UnitQty,tb.Describe,tb.Remark FROM BOMSubMatInfo ta LEFT JOIN BOMSubMatInstallInfo tb ON ta.BOMKeyId=tb.BOMKeyId AND ta.RowNo=tb.ParentRowCode) TA LEFT JOIN comMaterialGroup TB ON TA.BOMKeyId=TB.MaterialId ) TAA LEFT JOIN comMaterialGroup TC ON TAA.SubMaterialId =TC.MaterialId ) A WHERE SubMaterialId <> '' AND productId IS NOT null"
 
