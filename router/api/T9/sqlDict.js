@@ -10,7 +10,7 @@ const addMaterial = "insert into comMaterialGroup ( MaterialId,MaterialName,Mate
 
 const getProductsSelector = "select MaterialSpec as value,MaterialSpec+','+MaterialName AS 'option',MaterialId as token from comMaterialGroup"
 
-const getMaterial = "select * from ( select ta.MaterialId as UID,ta.MaterialName,ta.MaterialSpec,ta.CU_OldMaterialId,tb.MaterialCategoryName,tc.UnitName from comMaterialGroup ta ,comMaterialCategory tb,comUnit tc where ta.MaterialUsedStateId='ACTIVE' and MaterialTypeId='T0001' and ta.MaterialCategoryId=tb.MaterialCategoryId and ta.UnitId=tc.UnitId ) TA"
+const getMaterial = "select * from ( select ta.MaterialId as UID,ta.MaterialName,ta.MaterialSpec,ta.CU_OldMaterialId,ta.CU_OldMaterialSpec,ta.MaterialUsedStateId,ta.CreatorId,ta.CreateTime,ta.LastOperatorId,ta.LastOperateTime,tb.MaterialCategoryId,tb.MaterialCategoryName,tc.UnitId,tc.UnitName,td.MaterialUsedStateName from comMaterialGroup ta ,comMaterialCategory tb,comUnit tc,comMaterialUsedState td where ta.MaterialUsedStateId='ACTIVE' and MaterialTypeId='T0001' and ta.MaterialCategoryId=tb.MaterialCategoryId and ta.UnitId=tc.UnitId AND ta.MaterialUsedStateId=td.MaterialUsedStateId ) TA"
 
 const getCustomer = "select * from ( SELECT DISTINCT  ta.BizPartnerId as UID,ta.BizPartnerId,case ta.CU_GNGW  WHEN 0 then '国内' WHEN 12 then '国外' end as isInland ,tb.BizPartnerName,tb.ShortName,tb.ContactAddress,tb.WorkTelNo,tb.FaxNo,tb.Postalcode,tc.LinkMan,tc.TelNo from comCustomer ta left join comBusinessPartner tb  on ta.BizPartnerId=tb.BizPartnerId left join comCustomerAddr tc on ta.BizPartnerId=tc.BizPartnerId  ) TA "
 

@@ -1,17 +1,11 @@
-/*
- * @Author: your name
- * @Date: 2021-03-02 10:12:35
- * @LastEditTime: 2021-04-19 08:15:33
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\dict\index.js
- */
 const rp = require('./rp')
+const mes = require('./mes')
 const util = require('../../../../funs/util')
 
 
 const lib = {
-    rp: rp
+    rp: rp,
+    mes: mes
 }
 
 const getDict = ({

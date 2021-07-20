@@ -14,7 +14,6 @@ module.exports = {
         MaterialSpec: 'productDescription',
         MaterialCategoryName: 'systemClass',
         UnitName: 'unit',
-
     },
     customer: {
         UID: 'UID',
