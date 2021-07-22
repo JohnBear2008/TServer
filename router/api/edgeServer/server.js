@@ -5,7 +5,7 @@ const nedb = require('nedb')
 const ping = require('ping');
 
 
-const hosts = ['10.15.0.1'];
+const hosts = ['10.42.0.1'];
 
 const initServer = async (server_ip) => {
     const db = new nedb({

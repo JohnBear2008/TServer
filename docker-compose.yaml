@@ -1,0 +1,34 @@
+version: "3"
+services:
+    redis:
+        image: redis:latest
+        ports:
+            - "6379:6379"
+        container_name: im-redis-compose
+        restart: always
+        command: redis-server --appendonly yes
+    
+    rabbitmq:
+        image: rabbitmq:management
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        container_name: im-rabbitmq-compose
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+            RABBITMQ_DEFAULT_VHOST: my_vhost
+
+    backend:
+        build: .
+        links:
+            - redis
+            - rabbitmq
+        container_name: im-server-compose
+        restart: on-failure
+        depends_on:
+            - rabbitmq
+            - redis
+        ports:
+            - "3000:3000"
+        command: sh -c './wait-for.sh rabbitmq:15672 -- npm run start'

@@ -34,9 +34,7 @@ router.get('/', async (ctx, next) => {
     console.log('getMaterial', to, UID);
     //c
     if (!to) {
-        ctx.response.body = {
-            error: 'to 参数未设定!'
-        };
+        to = 'T9'
     }
 
     let mainSql = sqlDict['getMaterial'];
