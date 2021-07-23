@@ -1,4 +1,3 @@
-
 // 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
 const router = new Router()
@@ -13,10 +12,17 @@ const util = require('../../../../funs/util')
 router.get('/', async (ctx, next) => {
     let {
         to,
-        UID
+        UID,
+        filter
     } = ctx.request.query;
+    let type = 'customer';
 
-    console.log('getCustomer', to, UID);
+    if (UID && filter) {
+        ctx.response.body = 'UID,filter 不可共用'
+        return
+    }
+
+    console.log('getCustomer', to, UID, filter);
     //c
     if (!to) {
         to = 'T9'
@@ -44,10 +50,16 @@ router.get('/', async (ctx, next) => {
 
     }
 
+    if (filter) {
+        filter = dict.filterTranslater({
+            filter,
+            to,
+            type
+        })
+        executeSql = mainSql + " where " + filter;
+    }
 
-
-
-    console.log('executeSql:', executeSql);
+    // console.log('executeSql:', executeSql);
 
     let rs = await sqlserver.execute({
         sql: executeSql
@@ -55,7 +67,7 @@ router.get('/', async (ctx, next) => {
 
     // console.log('getCustomer rs', rs.recordset);
     let data = rs.recordset;
-    let type = 'customer';
+
 
     if (to && to !== 'T9') {
         data = dict.translater({

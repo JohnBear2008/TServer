@@ -80,7 +80,51 @@ const translater = ({
     return returnData
 }
 
+const filterTranslater = ({
+    filter,
+    to,
+    type
+}) => {
+    //c
+    if (!to) {
+        console.log('to 参数错误');
+        return
+    }
+
+    if (!type) {
+        console.log('type 参数错误');
+        return
+    }
+    //c
+    if (util.typeObj(filter) !== 'String') {
+        console.log('filter 非字符串 参数错误');
+        return
+    }
+    //c
+    if (filter.length === 0) {
+        return ""
+    }
+
+    //d
+    let dict = getDict({
+        to,
+        type
+    })
+    // console.log('dict', dict);
+    for (const p in dict) {
+        // console.log(dict[p]);
+        if (filter.indexOf(dict[p]) !== -1) {
+            console.log('find ', dict[p], p);
+            filter = filter.replace(new RegExp(dict[p], 'g'), p)
+        }
+
+    }
+    console.log(filter);
+    //r
+    return filter
+}
 
 module.exports = {
     translater: translater,
+    filterTranslater: filterTranslater
 }

@@ -28,10 +28,18 @@ const util = require('../../../../funs/util')
 router.get('/', async (ctx, next) => {
     let {
         to,
-        UID
+        UID,
+        filter
     } = ctx.request.query;
 
-    console.log('getMaterial', to, UID);
+    let type = 'material';
+
+    if (UID && filter) {
+        ctx.response.body = 'UID,filter 不可共用'
+        return
+    }
+
+    console.log('getMaterial', to, UID, filter);
     //c
     if (!to) {
         to = 'T9'
@@ -59,7 +67,16 @@ router.get('/', async (ctx, next) => {
 
     }
 
-    console.log('executeSql:', executeSql);
+    if (filter) {
+        filter = dict.filterTranslater({
+            filter,
+            to,
+            type
+        })
+        executeSql = mainSql + " where " + filter;
+    }
+
+    // console.log('executeSql:', executeSql);
 
     let rs = await sqlserver.execute({
         sql: executeSql
@@ -67,7 +84,7 @@ router.get('/', async (ctx, next) => {
 
     // console.log('getMaterial rs', rs.recordset);
     let data = rs.recordset;
-    let type = 'material';
+
 
     if (to && to !== 'T9') {
         data = dict.translater({
