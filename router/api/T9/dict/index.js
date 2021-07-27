@@ -104,6 +104,8 @@ const filterTranslater = ({
     if (filter.length === 0) {
         return ""
     }
+    //d 特殊字符处理
+    filter = filter.replace(/\"/g, "'");
 
     //d
     let dict = getDict({
