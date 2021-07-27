@@ -50,6 +50,7 @@ module.exports = {
     },
     storeIn: {
         BillNo: "billId",
+        RowNo:"rowId",
         CU_OldMaterialId: "productId",
         CU_OldMaterialSpec: "productName",
         MaterialId: "UID",
@@ -60,6 +61,7 @@ module.exports = {
     },
     storeOut: {
         BillNo: "billId",
+        RowNo:"rowId",
         CU_OldMaterialId: "productId",
         CU_OldMaterialSpec: "productName",
         MaterialId: "UID",
