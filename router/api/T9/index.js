@@ -17,7 +17,9 @@ router.use('/getCustomer', require('./read/getCustomer'))
 router.use('/getPerson', require('./read/getPerson'))
 router.use('/getBom', require('./read/getBom'))
 router.use('/getInstallInfo', require('./read/getInstallInfo'))
-router.use('/getStoreHistoryRPIn', require('./read/getStoreHistoryRPIn'))
+router.use('/getStoreIn', require('./read/getStoreIn'))
+router.use('/getStoreOut', require('./read/getStoreOut'))
+
 
 //写入接口
 router.use('/addMaterial', require('./write/addMaterial'))

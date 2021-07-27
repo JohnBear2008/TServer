@@ -12,7 +12,11 @@ const getBom = "select * from (SELECT ta.BOMKeyId as UID, ta.BOMKeyId,ta.SubMate
 
 const getInstallInfo = "SELECT * FROM (SELECT TAA.BOMKeyId,TAA.SubMaterialId,TAA.UnitQty,TAA.Describe,TAA.Remark,TAA.productId,TC.CU_OldMaterialId AS partId  FROM (SELECT TA.BOMKeyId,TA.SubMaterialId,TA.UnitQty,TA.Describe,TA.Remark,TB.CU_OldMaterialId AS productId FROM (SELECT ta.BOMKeyId,ta.SubMaterialId,ta.UnitQty,tb.Describe,tb.Remark FROM BOMSubMatInfo ta LEFT JOIN BOMSubMatInstallInfo tb ON ta.BOMKeyId=tb.BOMKeyId AND ta.RowNo=tb.ParentRowCode) TA LEFT JOIN comMaterialGroup TB ON TA.BOMKeyId=TB.MaterialId ) TAA LEFT JOIN comMaterialGroup TC ON TAA.SubMaterialId =TC.MaterialId ) A WHERE SubMaterialId <> '' AND productId IS NOT null"
 
-const getStoreHistoryRPIn = "SELECT * FROM ( SELECT ta.BillNo,ta.BillDate,ta.IOProperty,ta.ChangeTypeId,ta.WarehouseId,ta.FromBillNo,ta.PersonId,ta.Remark,ta.CurrentState,taa.MaterialId,taa.Quantity,tb.CU_OldMaterialId,tb.CU_OldMaterialSpec,tb.CU_type FROM dbo.stkWareHouseIn AS ta INNER JOIN dbo.stkWareHouseInDetail AS taa ON ta.BillNo = taa.BillNo INNER JOIN dbo.comMaterial AS tb ON taa.MaterialId = tb.MaterialId  WHERE ta.IOProperty=0 and ta.Remark like '%维修耗用%') A"
+const getStoreHistory = "SELECT * FROM ( SELECT ta.BillNo,ta.BillDate,ta.IOProperty,ta.ChangeTypeId,ta.WarehouseId,ta.FromBillNo,ta.PersonId,ta.Remark,ta.CurrentState,taa.MaterialId,taa.Quantity,tb.CU_OldMaterialId,tb.CU_OldMaterialSpec,tb.CU_type,tc.WarehouseName FROM dbo.stkWareHouseIn AS ta INNER JOIN dbo.stkWareHouseInDetail AS taa ON ta.BillNo = taa.BillNo INNER JOIN dbo.comMaterial AS tb ON taa.MaterialId = tb.MaterialId LEFT JOIN stkWarehouse tc ON taa.WarehouseId=tc.WarehouseId  WHERE ta.IOProperty=0 and ta.Remark like '%维修耗用%') A"
+
+const getStoreIn = "SELECT * FROM ( SELECT ta.BillNo,ta.BillDate,ta.IOProperty,ta.ChangeTypeId,ta.WarehouseId,ta.FromBillNo,ta.PersonId,ta.Remark,ta.CurrentState,taa.MaterialId,taa.Quantity,tb.CU_OldMaterialId,tb.CU_OldMaterialSpec,tb.CU_type,tc.WarehouseName FROM dbo.stkWareHouseIn AS ta INNER JOIN dbo.stkWareHouseInDetail AS taa ON ta.BillNo = taa.BillNo INNER JOIN dbo.comMaterial AS tb ON taa.MaterialId = tb.MaterialId LEFT JOIN stkWarehouse tc ON taa.WarehouseId=tc.WarehouseId  WHERE ta.IOProperty=1 ) A"
+
+const getStoreOut = "SELECT * FROM ( SELECT ta.BillNo,ta.BillDate,ta.IOProperty,ta.ChangeTypeId,ta.WarehouseId,ta.FromBillNo,ta.PersonId,ta.Remark,ta.CurrentState,taa.MaterialId,taa.Quantity,tb.CU_OldMaterialId,tb.CU_OldMaterialSpec,tb.CU_type,tc.WarehouseName FROM dbo.stkWareHouseIn AS ta INNER JOIN dbo.stkWareHouseInDetail AS taa ON ta.BillNo = taa.BillNo INNER JOIN dbo.comMaterial AS tb ON taa.MaterialId = tb.MaterialId LEFT JOIN stkWarehouse tc ON taa.WarehouseId=tc.WarehouseId  WHERE ta.IOProperty=0 ) A"
 
 module.exports = {
     addMaterial: addMaterial,
@@ -22,5 +26,7 @@ module.exports = {
     getPerson: getPerson,
     getBom: getBom,
     getInstallInfo: getInstallInfo,
-    getStoreHistoryRPIn: getStoreHistoryRPIn
+    getStoreHistory: getStoreHistory,
+    getStoreIn: getStoreIn,
+    getStoreOut: getStoreOut
 }

@@ -1,4 +1,3 @@
-
 // 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
 const router = new Router()
@@ -13,16 +12,22 @@ const util = require('../../../../funs/util')
 router.get('/', async (ctx, next) => {
     let {
         to,
-        UID
+        UID,
+        filter
     } = ctx.request.query;
 
-    console.log('getStoreHistoryRPIn', to, UID);
-    //c
-    if (!to) {
-        to = 'T9'
+
+    let type = 'storeIn';
+
+    console.log('getStoreIn', to, UID, filter);
+
+    if (UID && filter) {
+        ctx.response.body = 'UID,filter 不可共用'
+        return
     }
 
-    let mainSql = sqlDict['getStoreHistoryRPIn'];
+
+    let mainSql = sqlDict['getStoreIn'];
     let executeSql = mainSql
     if (UID) {
         let UIDType = util.typeObj(UID)
@@ -45,6 +50,14 @@ router.get('/', async (ctx, next) => {
     }
 
 
+    if (filter) {
+        filter = dict.filterTranslater({
+            filter,
+            to,
+            type
+        })
+        executeSql = mainSql + " where " + filter;
+    }
 
 
     console.log('executeSql:', executeSql);
@@ -53,17 +66,16 @@ router.get('/', async (ctx, next) => {
         sql: executeSql
     })
 
-    // console.log('getPerson rs', rs.recordset);
     let data = rs.recordset;
-    // let type = 'getStoreHistoryRPIn';
 
-    // if (to && to !== 'T9') {
-    //     data = dict.translater({
-    //         data,
-    //         to,
-    //         type
-    //     })
-    // }
+
+    if (to && to !== 'T9') {
+        data = dict.translater({
+            data,
+            to,
+            type
+        })
+    }
 
 
     // console.log('data', data);

@@ -47,5 +47,25 @@ module.exports = {
         Describe: 'locations',
         UnitQty: 'num',
         Remark: 'remark'
+    },
+    storeIn: {
+        BillNo: "billId",
+        CU_OldMaterialId: "productId",
+        CU_OldMaterialSpec: "productName",
+        MaterialId: "UID",
+        Quantity: "num",
+        Remark: "remark",
+        WarehouseId: "warehouseId",
+        WarehouseName: "warehouseName"
+    },
+    storeOut: {
+        BillNo: "billId",
+        CU_OldMaterialId: "productId",
+        CU_OldMaterialSpec: "productName",
+        MaterialId: "UID",
+        Quantity: "num",
+        Remark: "remark",
+        WarehouseId: "warehouseId",
+        WarehouseName: "warehouseName"
     }
 }
