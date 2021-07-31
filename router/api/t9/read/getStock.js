@@ -1,4 +1,3 @@
-
 // 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
 const router = new Router()
@@ -13,14 +12,23 @@ const util = require('../../../../funs/util')
 router.get('/', async (ctx, next) => {
     let {
         to,
-        UID
+        UID,
+        filter
     } = ctx.request.query;
-    console.log('getBom', to, UID);
+    let type = 'stock';
+
+    if (UID && filter) {
+        ctx.response.body = 'UID,filter 不可共用'
+        return
+    }
+
+    console.log('getStock', to, UID, filter);
     //c
     if (!to) {
         to = 'T9'
     }
-    let mainSql = sqlDict['getBom'];
+
+    let mainSql = sqlDict['getStock'];
     let executeSql = mainSql
     if (UID) {
         let UIDType = util.typeObj(UID)
@@ -29,6 +37,7 @@ router.get('/', async (ctx, next) => {
             case 'String':
                 filterArr = UID.split(',');
                 break;
+
             case 'Array':
                 filterArr = UID
                 break;
@@ -41,15 +50,24 @@ router.get('/', async (ctx, next) => {
 
     }
 
-    console.log('executeSql:', executeSql);
+    if (filter) {
+        filter = dict.filterTranslater({
+            filter,
+            to,
+            type
+        })
+        executeSql = mainSql + " where " + filter;
+    }
+
+    // console.log('executeSql:', executeSql);
 
     let rs = await sqlserver.execute({
         sql: executeSql
     })
 
-    console.log('getBom rs', rs.recordset);
+    // console.log('getMaterial rs', rs.recordset);
     let data = rs.recordset;
-    let type = 'bom';
+
 
     if (to && to !== 'T9') {
         data = dict.translater({
@@ -58,6 +76,7 @@ router.get('/', async (ctx, next) => {
             type
         })
     }
+
 
     // console.log('data', data);
 

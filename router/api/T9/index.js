@@ -11,6 +11,7 @@ router.use('/getBom', require('./read/getBom'))
 router.use('/getInstallInfo', require('./read/getInstallInfo'))
 router.use('/getStoreIn', require('./read/getStoreIn'))
 router.use('/getStoreOut', require('./read/getStoreOut'))
+router.use('/getStock', require('./read/getStock'))
 
 
 //写入接口

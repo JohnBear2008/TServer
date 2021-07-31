@@ -14,6 +14,8 @@ const getInstallInfo = "SELECT * FROM (SELECT TAA.BOMKeyId,TAA.SubMaterialId,TAA
 
 const getStoreHistory = "SELECT * FROM ( SELECT ta.BillNo,ta.BillDate,ta.IOProperty,ta.ChangeTypeId,ta.WarehouseId,ta.FromBillNo,ta.PersonId,ta.Remark,ta.CurrentState,taa.MaterialId,taa.Quantity,tb.CU_OldMaterialId,tb.CU_OldMaterialSpec,tb.CU_type,tc.WarehouseName FROM dbo.stkWareHouseIn AS ta INNER JOIN dbo.stkWareHouseInDetail AS taa ON ta.BillNo = taa.BillNo INNER JOIN dbo.comMaterial AS tb ON taa.MaterialId = tb.MaterialId LEFT JOIN stkWarehouse tc ON taa.WarehouseId=tc.WarehouseId  WHERE ta.IOProperty=0 and ta.Remark like '%维修耗用%') A"
 
+const getStock = "SELECT * FROM ( SELECT ta.MaterialId as UID,ta.MaterialId,ta.WarehouseId,ta.Quantity,ta.StockStateId,ta.LastUpdateTime,tb.WarehouseName FROM stkWareHouseAccountDetail ta  LEFT JOIN stkWarehouse tb ON ta.WarehouseId=tb.WarehouseId) TA"
+
 const getStoreIn = "SELECT * FROM ( SELECT ta.BillNo,ta.BillDate,ta.IOProperty,ta.ChangeTypeId,ta.WarehouseId,ta.FromBillNo,ta.PersonId,ta.Remark,ta.CurrentState,taa.RowNo,taa.MaterialId,taa.Quantity,tb.CU_OldMaterialId,tb.CU_OldMaterialSpec,tb.CU_type,tc.WarehouseName FROM dbo.stkWareHouseIn AS ta INNER JOIN dbo.stkWareHouseInDetail AS taa ON ta.BillNo = taa.BillNo INNER JOIN dbo.comMaterial AS tb ON taa.MaterialId = tb.MaterialId LEFT JOIN stkWarehouse tc ON taa.WarehouseId=tc.WarehouseId  WHERE ta.IOProperty=1 ) A"
 
 const getStoreOut = "SELECT * FROM ( SELECT ta.BillNo,ta.BillDate,ta.IOProperty,ta.ChangeTypeId,ta.WarehouseId,ta.FromBillNo,ta.PersonId,ta.Remark,ta.CurrentState,taa.RowNo,taa.MaterialId,taa.Quantity,tb.CU_OldMaterialId,tb.CU_OldMaterialSpec,tb.CU_type,tc.WarehouseName FROM dbo.stkWareHouseIn AS ta INNER JOIN dbo.stkWareHouseInDetail AS taa ON ta.BillNo = taa.BillNo INNER JOIN dbo.comMaterial AS tb ON taa.MaterialId = tb.MaterialId LEFT JOIN stkWarehouse tc ON taa.WarehouseId=tc.WarehouseId  WHERE ta.IOProperty=0 ) A"
@@ -27,6 +29,7 @@ module.exports = {
     getBom: getBom,
     getInstallInfo: getInstallInfo,
     getStoreHistory: getStoreHistory,
+    getStock: getStock,
     getStoreIn: getStoreIn,
     getStoreOut: getStoreOut
 }

@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-03-02 09:41:19
- * @LastEditTime: 2021-04-21 16:58:50
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\dict\rp.js
- */
 module.exports = {
     material: {
         UID: 'UID',
@@ -50,7 +42,7 @@ module.exports = {
     },
     storeIn: {
         BillNo: "billId",
-        RowNo:"rowId",
+        RowNo: "rowId",
         CU_OldMaterialId: "productId",
         CU_OldMaterialSpec: "productName",
         MaterialId: "UID",
@@ -61,13 +53,19 @@ module.exports = {
     },
     storeOut: {
         BillNo: "billId",
-        RowNo:"rowId",
+        RowNo: "rowId",
         CU_OldMaterialId: "productId",
         CU_OldMaterialSpec: "productName",
         MaterialId: "UID",
         Quantity: "num",
         Remark: "remark",
         WarehouseId: "warehouseId",
+        WarehouseName: "warehouseName"
+    },
+    stock: {
+        MaterialId: "UID",
+        MaterialId: 'productId',
+        Quantity: "num",
         WarehouseName: "warehouseName"
     }
 }

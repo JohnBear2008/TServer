@@ -1,19 +1,4 @@
-/*
- * @Author: your name
- * @Date: 2021-06-09 16:18:11
- * @LastEditTime: 2021-06-09 16:21:52
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\read\getMaterial.js
- */
-/*
- * @Author: your name
- * @Date: 2021-06-09 14:59:17
- * @LastEditTime: 2021-06-09 16:09:41
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \TServer\router\api\T9\routes\test.js
- */
+
 // 注意require('koa-router')返回的是函数:
 const Router = require('koa-router');
 const router = new Router()
