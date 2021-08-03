@@ -11,6 +11,7 @@ const Router = require('koa-router');
 var router = new Router()
 router.use('/t9', require('./t9'))
 router.use('/projectAdmin', require('./projectAdmin'))
+router.use('/produceUnit', require('./produceUnit'))
 router.use('/ppm', require('./ppm'))
 router.use('/edgeserver', require('./edgeServer/server'))
 
