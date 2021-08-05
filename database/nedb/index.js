@@ -78,6 +78,30 @@ const isExist = async ({
     return res;
 }
 
+const getExist = async ({
+    name,
+    filter
+}) => {
+    console.log('findOneDB filter', filter);
+    let db = await getDB(name);
+    // console.log('db', db);
+    // 插入单项
+    let res = await new Promise((resolve, reject) => {
+        db.findOne(filter, (err, ret) => {
+            if (err) {
+                console.log('getExist err', err);
+                reject(err)
+            }
+            if (ret) {
+                console.log('getExist ret', ret);
+                resolve(ret)
+            } else {
+                resolve(false)
+            }
+        });
+    })
+    return res;
+}
 
 const findOneDB = async ({
     name,
@@ -197,5 +221,6 @@ module.exports = {
     findDB,
     updateOneDB,
     deleteDB,
-    isExist
+    isExist,
+    getExist
 }
