@@ -7,6 +7,6 @@ router.use('/inputs', require('./routes/inputs/'))
 
 
 router.use('/materials', require('./routes/materials/'))
-
+router.use('/orders', require('./routes/orders/'))
 
 module.exports = router.routes()
