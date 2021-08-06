@@ -2,31 +2,14 @@ const Router = require('koa-router');
 const router = new Router()
 const nedb = require('../../../../../database/nedb')
 
-
-//接口测试
-router.get('/get', async (ctx, next) => {
-    console.log('get', ctx.request.body);
-    let findRS = await nedb.findDB({
-        name: 'produceUnit_materials_stocks',
-        filter: ctx.request.body.filter
-    })
-
-    console.log('findRS', findRS);
-    next()
-    ctx.response.body = findRS
-});
-
-//增加接口
-router.post('/add', async (ctx, next) => {
-    console.log('stocks add', ctx.request.body);
-    let {
-        materialId,
-        materialName,
-        num,
-        orderId,
-        from,
-        dateTime
-    } = ctx.request.body
+const addMaterial = async ({
+    materialId,
+    materialName,
+    num,
+    orderId,
+    from,
+    dateTime
+}) => {
 
     let filter = {
         materialId: materialId
@@ -37,8 +20,6 @@ router.post('/add', async (ctx, next) => {
     })
 
     console.log('geExistRS', geExistRS);
-
-
 
     let stockRs;
     if (geExistRS) {
@@ -82,33 +63,156 @@ router.post('/add', async (ctx, next) => {
         }
     })
 
-    let result
+    return stockRs && historyRs ? true : false
 
-    if (stockRs && historyRs) {
-        result = {
-            result: 'success'
-        };
-    } else {
-        result = {
-            result: 'fail'
-        };
+}
+
+const reduceMaterial = async ({
+    materialId,
+    materialName,
+    num,
+    orderId,
+    from,
+    dateTime
+}) => {
+
+    let filter = {
+        materialId: materialId
+    }
+    let geExistRS = await nedb.getExist({
+        name: 'produceUnit_materials_stocks',
+        filter: filter
+    })
+
+    console.log('geExistRS', geExistRS);
+
+    let stockRs;
+    if (!geExistRS) {
+        console.log('无库存');
+        return false
     }
 
+    if (parseInt(geExistRS.num) < parseInt(num)) {
+        console.log(geExistRS.materialId + ',库存不足');
+        return
+    }
+
+    let updateRs = await nedb.updateOneDB({
+        name: 'produceUnit_materials_stocks',
+        filter: filter,
+        data: {
+            materialId: materialId,
+            materialName: materialName,
+            num: parseInt(geExistRS.num) - parseInt(num),
+        }
+    })
+    stockRs = updateRs ? true : false;
+    let nowNum = geExistRS.num ? parseInt(geExistRS.num) - parseInt(num) : parseInt(num)
+    let historyRs = await nedb.insertDB({
+        name: 'produceUnit_materials_historys',
+        data: {
+            materialId: materialId,
+            materialName: materialName,
+            historyNum: geExistRS.num,
+            changeNum: num,
+            nowNum: nowNum,
+            orderId: orderId,
+            from: from,
+            dateTime: dateTime,
+            type: '减少'
+        }
+    })
+    return stockRs && historyRs ? true : false
+
+}
+
+
+//接口测试
+router.post('/get', async (ctx, next) => {
+    console.log('get', ctx.request.body);
+    let findRS = await nedb.findDB({
+        name: 'produceUnit_materials_stocks',
+        filter: ctx.request.body.filter
+    })
+
+    console.log('findRS', findRS);
+    next()
+    ctx.response.body = findRS
+});
+
+//增加接口
+router.post('/add', async (ctx, next) => {
+    console.log('stocks add', ctx.request.body);
+    let {
+        materialId,
+        materialName,
+        num,
+        orderId,
+        from,
+        dateTime
+    } = ctx.request.body
+
+    let addRs = await addMaterial({
+        materialId,
+        materialName,
+        num,
+        orderId,
+        from,
+        dateTime
+    })
+
+    let result = addRs ? {
+        result: 'success'
+    } : {
+        result: 'fail'
+    }
     ctx.response.body = result
 });
 
 //减少接口
 router.post('/reduce', async (ctx, next) => {
-    console.log('insert', ctx.request.body);
+    console.log('stocks reduce', ctx.request.body);
+    let {
+        materialId,
+        materialName,
+        num,
+        orderId,
+        from,
+        dateTime
+    } = ctx.request.body
 
-    nedb.insertDB({
-        name: 'produceUnit_inputs_materials',
-        data: ctx.request.body
+    let reduceRs = await reduceMaterial({
+        materialId,
+        materialName,
+        num,
+        orderId,
+        from,
+        dateTime
     })
-    next()
-    ctx.response.body = {
+
+    let result = reduceRs ? {
         result: 'success'
-    };
+    } : {
+        result: 'fail'
+    }
+    ctx.response.body = result
+});
+//批量减少接口
+router.post('/reduces', async (ctx, next) => {
+    console.log('stocks reduces', ctx.request.body);
+    let materialArr = ctx.request.body
+    let reduceRs = true
+    for (const n of materialArr) {
+        let rsN = await reduceMaterial(n)
+        reduceRs = reduceRs && rsN
+    }
+
+    let result = reduceRs ? {
+        result: 'success'
+    } : {
+        result: 'fail'
+    }
+    ctx.response.body = result
 });
 
 
