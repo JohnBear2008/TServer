@@ -3,7 +3,7 @@ const Router = require('koa-router');
 const router = new Router()
 
 
-router.use('/inputs', require('./routes/inputs/'))
+router.use('/units', require('./routes/units/'))
 
 router.use('/procedures', require('./routes/procedures/'))
 router.use('/materials', require('./routes/materials/'))

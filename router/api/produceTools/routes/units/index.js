@@ -1,13 +1,13 @@
 const Router = require('koa-router');
 const router = new Router()
 const nedb = require('../../../../../database/nedb')
-
+const ping = require('ping');
 
 //接口测试
-router.get('/get', async (ctx, next) => {
+router.post('/get', async (ctx, next) => {
     console.log('get', ctx.request.body);
     let findRS = await nedb.findDB({
-        name: 'produceUnit_inputs_materials',
+        name: 'produceTools_units',
         filter: ctx.request.body.filter
     })
 
@@ -17,12 +17,33 @@ router.get('/get', async (ctx, next) => {
 
 });
 
+router.post('/ping', async (ctx, next) => {
+    let hosts = ctx.request.body.hosts
+    let pingRs = []
+
+    for (let host of hosts) {
+        // WARNING: -i 2 argument may not work in other platform like windows
+        let res = await ping.promise.probe(host, {
+            timeout: 10,
+            extra: ['-i', '2'],
+        });
+        console.log(res);
+        
+        pingRs.push({
+            host: res.host,
+            alive: res.alive
+        })
+    }
+    next()
+    ctx.response.body = pingRs;
+});
+
 //接口测试
-router.post('/insert', async (ctx, next) => {
+router.post('/add', async (ctx, next) => {
     console.log('insert', ctx.request.body);
 
     nedb.insertDB({
-        name: 'produceUnit_inputs_materials',
+        name: 'produceTools_units',
         data: ctx.request.body
     })
     next()
@@ -40,7 +61,7 @@ router.post('/save', async (ctx, next) => {
     }
 
     let isExistRS = await nedb.isExist({
-        name: 'produceUnit_inputs_materials',
+        name: 'produceTools_units',
         filter: filter
     })
 
@@ -48,7 +69,7 @@ router.post('/save', async (ctx, next) => {
     let rs = {};
     if (isExistRS) {
         let updateRs = await nedb.updateOneDB({
-            name: 'produceUnit_inputs_materials',
+            name: 'produceTools_units',
             filter: filter,
             data: ctx.request.body
         })
@@ -59,7 +80,7 @@ router.post('/save', async (ctx, next) => {
         }
     } else {
         let insertRs = await nedb.insertDB({
-            name: 'produceUnit_inputs_materials',
+            name: 'produceTools_units',
             data: ctx.request.body
         })
         rs = insertRs ? {
@@ -84,7 +105,7 @@ router.post('/delete', async (ctx, next) => {
     }
     let rs = {};
     let removeRs = await nedb.deleteDB({
-        name: 'produceUnit_inputs_materials',
+        name: 'produceTools_units',
         filter: filter,
         data: ctx.request.body
     })
