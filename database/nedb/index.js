@@ -18,7 +18,8 @@ const getDB = async (
 ) => {
     let db = await new nedb({
         filename: 'data/' + name + '.db',
-        autoload: true
+        autoload: true,
+        corruptAlertThreshold: 1 //避免高频调用崩溃系统
     }, (err, ret) => {
         console.log('实例化连接对象mobConfig', err, ret);
     });

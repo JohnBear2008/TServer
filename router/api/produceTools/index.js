@@ -4,9 +4,10 @@ const router = new Router()
 
 
 router.use('/units', require('./routes/units/'))
-
+router.use('/boms', require('./routes/boms/'))
 router.use('/procedures', require('./routes/procedures/'))
 router.use('/materials', require('./routes/materials/'))
-router.use('/orders', require('./routes/orders/'))
+router.use('/productOrders', require('./routes/productOrders/'))
+router.use('/orders', require('./routes/orders'))
 
 module.exports = router.routes()
