@@ -2,7 +2,7 @@
 const Router = require('koa-router');
 const router = new Router()
 
-
+router.use('/settings', require('./routes/settings/'))
 router.use('/inputs', require('./routes/inputs/'))
 
 

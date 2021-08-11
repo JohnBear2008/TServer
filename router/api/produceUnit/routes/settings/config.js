@@ -4,16 +4,29 @@ const nedb = require('../../../../../database/nedb')
 const ping = require('ping');
 
 //接口测试
-router.post('/get', async (ctx, next) => {
-    console.log('get', ctx.request.body);
-    let findRS = await nedb.findDB({
-        name: 'produceUnit_settings',
-        filter: ctx.request.body.filter
-    })
 
-    console.log('findRS', findRS);
+function getIPAddress() {
+    var interfaces = require('os').networkInterfaces();
+    for (var devName in interfaces) {
+        var iface = interfaces[devName];
+        for (var i = 0; i < iface.length; i++) {
+            var alias = iface[i];
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+}
+
+router.post('/get', async (ctx, next) => {
+    console.log(getIPAddress()) // 本地ip
+
+    let ip = getIPAddress()
+    let port = ctx.request.header.host.split(':')[1]
+    let local = ip + ':' + port
+
     next()
-    ctx.response.body = findRS
+    ctx.response.body = local
 
 });
 
@@ -28,7 +41,7 @@ router.post('/ping', async (ctx, next) => {
             extra: ['-i', '2'],
         });
         console.log(res);
-        
+
         pingRs.push({
             host: res.host,
             alive: res.alive

@@ -23,15 +23,23 @@ router.post('/get', async (ctx, next) => {
 const getBomArr = async (bomId) => {
     let bomArr = []
 
-    let rs = await nedb.findDB({
+    let rs1 = await nedb.findDB({
         name: 'produceTools_boms',
         filter: {
             bomId: bomId
         }
     })
-    console.log('rs', rs);
+    console.log('rs1', rs1);
+
+    let rs2 = await nedb.findDB({
+        name: 'produceTools_procedures',
+        filter: {
+            bomId: bomId
+        }
+    })
+    console.log('rs2', rs2);
     let materials = [];
-    for (const n of rs) {
+    for (const n of rs1) {
         materials.push({
             materialId: n.subMaterialId,
             materialName: n.subMaterialName,
@@ -44,8 +52,10 @@ const getBomArr = async (bomId) => {
     }
     let bom = {
         bomId: bomId,
-        materialId: rs[0].materialId,
-        materialName: rs[0].materialName,
+        materialId: rs1[0].materialId,
+        materialName: rs1[0].materialName,
+        unitNum: rs1[0].unitNum,
+        procedureId: rs2[0].procedureId,
         materials: materials
     }
     bomArr.push(bom)
