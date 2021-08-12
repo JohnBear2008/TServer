@@ -1,16 +1,16 @@
 const Router = require('koa-router');
 const router = new Router()
-
 const request = require('request');
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; //忽略自签名证书错误
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const nedb = require('../../../../../database/nedb')
+
 
 //接口测试
 router.post('/get', async (ctx, next) => {
     console.log('get', ctx.request.body);
     let findRS = await nedb.findDB({
-        name: 'produceTools_units',
+        name: 'produceTools_unitOrders_stocks',
         filter: ctx.request.body.filter
     })
 
@@ -20,12 +20,69 @@ router.post('/get', async (ctx, next) => {
 
 });
 
-router.post('/link', async (ctx, next) => {
-    let server = ctx.request.body.server
-    let url = "https://" + server + "/api/produceUnit/settings/config/get"
-    console.log('link ', server);
+
+//接口测试
+
+const getBomArr = async (bomId) => {
+    let bomArr = []
+
+    let rs1 = await nedb.findDB({
+        name: 'produceTools_boms',
+        filter: {
+            bomId: bomId
+        }
+    })
+    console.log('rs1', rs1);
+
+    let rs2 = await nedb.findDB({
+        name: 'produceTools_procedures',
+        filter: {
+            bomId: bomId
+        }
+    })
+    console.log('rs2', rs2);
+    let materials = [];
+    for (const n of rs1) {
+        materials.push({
+            materialId: n.subMaterialId,
+            materialName: n.subMaterialName,
+            unitNum: n.unitNum
+        })
+        if (n.hasChildren === 1) {
+            let subBomArr = await getBomArr(n.subMaterialId)
+            bomArr = bomArr.concat(subBomArr)
+        }
+    }
+    let bom = {
+        bomId: bomId,
+        materialId: rs1[0].materialId,
+        materialName: rs1[0].materialName,
+        unitNum: rs1[0].unitNum,
+        procedureId: rs2[0].procedureId,
+        materials: materials
+    }
+    bomArr.push(bom)
+    return bomArr
+}
 
 
+router.post('/getOrders', async (ctx, next) => {
+    console.log('getOrders', ctx.request.body);
+    let bomId = ctx.request.body.bomId
+    let findRS = await getBomArr(bomId)
+    console.log('findRS', findRS);
+    next()
+    ctx.response.body = findRS
+
+});
+
+router.post('/sendOrder', async (ctx, next) => {
+    console.log('sendOrder', ctx.request.body);
+    let order = ctx.request.body;
+
+    let unit = order.unit
+    let url = "https://" + unit + "/api/produceUnit/inputs/orders/insert"
+    console.log('link ', unit);
 
     let rs = await new Promise((resolve, reject) => {
         request({
@@ -34,7 +91,7 @@ router.post('/link', async (ctx, next) => {
             headers: { //设置请求头
                 "content-type": "application/json",
             },
-            body: "" //post参数字符串
+            body: JSON.stringify(order) //post参数字符串
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 resolve(body)
@@ -44,19 +101,20 @@ router.post('/link', async (ctx, next) => {
             }
         });
     })
-    if (rs._id) {
-        delete rs._id
-    }
-    console.log('get 111', rs);
-    ctx.response.body = rs
+
+    console.log('rs1111111', rs);
+
+    next()
+    ctx.response.body = "sendOrders test"
+
 });
 
 //接口测试
-router.post('/add', async (ctx, next) => {
+router.post('/insert', async (ctx, next) => {
     console.log('insert', ctx.request.body);
 
     nedb.insertDB({
-        name: 'produceTools_units',
+        name: 'produceTools_unitOrders_stocks',
         data: ctx.request.body
     })
     next()
@@ -64,8 +122,6 @@ router.post('/add', async (ctx, next) => {
         result: 'success'
     };
 });
-
-
 
 
 //接口测试
@@ -76,7 +132,7 @@ router.post('/save', async (ctx, next) => {
     }
 
     let isExistRS = await nedb.isExist({
-        name: 'produceTools_units',
+        name: 'produceTools_unitOrders_stocks',
         filter: filter
     })
 
@@ -84,7 +140,7 @@ router.post('/save', async (ctx, next) => {
     let rs = {};
     if (isExistRS) {
         let updateRs = await nedb.updateOneDB({
-            name: 'produceTools_units',
+            name: 'produceTools_unitOrders_stocks',
             filter: filter,
             data: ctx.request.body
         })
@@ -95,7 +151,7 @@ router.post('/save', async (ctx, next) => {
         }
     } else {
         let insertRs = await nedb.insertDB({
-            name: 'produceTools_units',
+            name: 'produceTools_unitOrders_stocks',
             data: ctx.request.body
         })
         rs = insertRs ? {
@@ -120,7 +176,7 @@ router.post('/delete', async (ctx, next) => {
     }
     let rs = {};
     let removeRs = await nedb.deleteDB({
-        name: 'produceTools_units',
+        name: 'produceTools_unitOrders_stocks',
         filter: filter,
         data: ctx.request.body
     })

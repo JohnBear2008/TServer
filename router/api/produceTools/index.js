@@ -8,6 +8,7 @@ router.use('/boms', require('./routes/boms/'))
 router.use('/procedures', require('./routes/procedures/'))
 router.use('/materials', require('./routes/materials/'))
 router.use('/productOrders', require('./routes/productOrders/'))
+router.use('/unitOrders', require('./routes/unitOrders/'))
 router.use('/orders', require('./routes/orders'))
 
 module.exports = router.routes()
