@@ -172,6 +172,7 @@ const updateOneDB = async ({
             $set: data
         }, (err, ret) => {
             if (err) {
+                console.log(err);
                 reject(err)
             }
             if (ret) {

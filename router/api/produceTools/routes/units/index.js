@@ -1,7 +1,10 @@
 const Router = require('koa-router');
+const {
+    resolveContent
+} = require('nodemailer/lib/shared');
 const router = new Router()
+const request = require('request');
 const nedb = require('../../../../../database/nedb')
-const ping = require('ping');
 
 //接口测试
 router.post('/get', async (ctx, next) => {
@@ -17,25 +20,32 @@ router.post('/get', async (ctx, next) => {
 
 });
 
-router.post('/ping', async (ctx, next) => {
-    let hosts = ctx.request.body.hosts
-    let pingRs = []
+router.post('/link', async (ctx, next) => {
+    let server = ctx.request.body.server
+    let url = "https://" + server + "/api/produceUnit/settings/config/get"
+    console.log('link ', server);
 
-    for (let host of hosts) {
-        // WARNING: -i 2 argument may not work in other platform like windows
-        let res = await ping.promise.probe(host, {
-            timeout: 10,
-            extra: ['-i', '2'],
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+    let rs = await new Promise((resolve, reject) => {
+        request({
+            url: url, //请求路径
+            method: "POST", //请求方式，默认为get
+            headers: { //设置请求头
+                "content-type": "application/json",
+            },
+            body: "" //post参数字符串
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                resolve(body)
+            }
+            if (error) {
+                reject(error)
+            }
         });
-        console.log(res);
-        
-        pingRs.push({
-            host: res.host,
-            alive: res.alive
-        })
-    }
-    next()
-    ctx.response.body = pingRs;
+    })
+    console.log('get 111', rs);
+    ctx.response.body = rs
 });
 
 //接口测试
