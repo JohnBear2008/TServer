@@ -20,7 +20,7 @@ const getRangeString = (arr) => {
  * @param {*} obj
  * @returns
  */
- const typeObj = (obj) => {
+const typeObj = (obj) => {
     let type = Object.prototype.toString.call(obj);
     let typeResult = '';
     switch (type) {
@@ -42,7 +42,26 @@ const getRangeString = (arr) => {
 
 }
 
+const dateFormat = (date, fmt) => {
+    //先格式化为日期,缺少此句 get函数无法执行
+    date = new Date(date);
+    let o = {
+        "M+": date.getMonth() + 1, //月份 
+        "d+": date.getDate(), //日 
+        "H+": date.getHours(), //小时 
+        "m+": date.getMinutes(), //分 
+        "s+": date.getSeconds(), //秒 
+        "q+": Math.floor((date.getMonth() + 3) / 3), //季度 
+        "S": date.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (let k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+
 module.exports = {
     getRangeString: getRangeString,
-    typeObj:typeObj
+    typeObj: typeObj,
+    dateFormat: dateFormat
 }

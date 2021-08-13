@@ -10,5 +10,6 @@ router.use('/materials', require('./routes/materials/'))
 router.use('/productOrders', require('./routes/productOrders/'))
 router.use('/unitOrders', require('./routes/unitOrders/'))
 router.use('/orders', require('./routes/orders'))
+router.use('/settings', require('./routes/settings'))
 
 module.exports = router.routes()

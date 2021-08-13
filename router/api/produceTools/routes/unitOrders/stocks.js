@@ -4,6 +4,7 @@ const request = require('request');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const nedb = require('../../../../../database/nedb')
+const util = require('../../../../../funs/util')
 
 
 //接口测试
@@ -76,17 +77,53 @@ router.post('/getOrders', async (ctx, next) => {
 
 });
 
+
+
 router.post('/sendOrder', async (ctx, next) => {
     console.log('sendOrder', ctx.request.body);
     let order = ctx.request.body;
-
     let unit = order.unit
-    let url = "https://" + unit + "/api/produceUnit/inputs/orders/insert"
+    let orderUrl = "https://" + unit + "/api/produceUnit/orders/stocks/insert"
+    let materialUrl = "https://" + unit + "/api/produceUnit/materials/stocks/adds"
     console.log('link ', unit);
 
-    let rs = await new Promise((resolve, reject) => {
+    let materialsArr = [];
+    for (const n of order.materials) {
+        materialsArr.push({
+            materialId: n.materialId,
+            materialName: n.materialName,
+            num: n.num,
+            orderId: order.orderId,
+            from: "工单投放",
+            dateTime: util.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"),
+        });
+    }
+
+
+
+    let materialsRs = await new Promise((resolve, reject) => {
         request({
-            url: url, //请求路径
+            url: materialUrl, //请求路径
+            method: "POST", //请求方式，默认为get
+            headers: { //设置请求头
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(materialsArr) //post参数字符串
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                resolve(body)
+            }
+            if (error) {
+                reject(error)
+            }
+        });
+    })
+    console.log('materialsRs', materialsRs);
+
+
+    let orderRs = await new Promise((resolve, reject) => {
+        request({
+            url: orderUrl, //请求路径
             method: "POST", //请求方式，默认为get
             headers: { //设置请求头
                 "content-type": "application/json",
@@ -102,10 +139,16 @@ router.post('/sendOrder', async (ctx, next) => {
         });
     })
 
-    console.log('rs1111111', rs);
+    console.log('orderRs', orderRs);
+
+    let result = materialsRs && orderRs ? {
+        result: 'success'
+    } : {
+        result: 'fail'
+    }
 
     next()
-    ctx.response.body = "sendOrders test"
+    ctx.response.body = result
 
 });
 

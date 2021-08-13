@@ -4,25 +4,51 @@ const nedb = require('../../../../../database/nedb')
 
 
 //接口测试
-router.get('/get', async (ctx, next) => {
-    console.log('get', ctx.request.body);
-    let findRS = await nedb.findDB({
-        name: 'produceUnit_inputs_materials',
-        filter: ctx.request.body.filter
+
+function getIPAddress() {
+    var interfaces = require('os').networkInterfaces();
+    for (var devName in interfaces) {
+        var iface = interfaces[devName];
+        for (var i = 0; i < iface.length; i++) {
+            var alias = iface[i];
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+}
+
+router.post('/get', async (ctx, next) => {
+    console.log(getIPAddress()) // 本地ip
+
+    let ip = getIPAddress()
+    let port = ctx.request.header.host.split(':')[1]
+    let server = ip + ':' + port
+    let result = {}
+    let rs = await nedb.findOneDB({
+        name: 'produceTool_settings_config',
     })
 
-    console.log('findRS', findRS);
+    if (!rs) {
+        result = {
+            server: server
+        }
+    } else {
+        result = rs
+        result.server = server
+    }
+    console.log('rs', rs);
     next()
-    ctx.response.body = findRS
+    ctx.response.body = result
 
 });
 
 //接口测试
-router.post('/insert', async (ctx, next) => {
+router.post('/add', async (ctx, next) => {
     console.log('insert', ctx.request.body);
 
     nedb.insertDB({
-        name: 'produceUnit_inputs_materials',
+        name: 'produceTool_settings_config',
         data: ctx.request.body
     })
     next()
@@ -40,7 +66,7 @@ router.post('/save', async (ctx, next) => {
     }
 
     let isExistRS = await nedb.isExist({
-        name: 'produceUnit_inputs_materials',
+        name: 'produceTool_settings_config',
         filter: filter
     })
 
@@ -48,7 +74,7 @@ router.post('/save', async (ctx, next) => {
     let rs = {};
     if (isExistRS) {
         let updateRs = await nedb.updateOneDB({
-            name: 'produceUnit_inputs_materials',
+            name: 'produceTool_settings_config',
             filter: filter,
             data: ctx.request.body
         })
@@ -59,7 +85,7 @@ router.post('/save', async (ctx, next) => {
         }
     } else {
         let insertRs = await nedb.insertDB({
-            name: 'produceUnit_inputs_materials',
+            name: 'produceTool_settings_config',
             data: ctx.request.body
         })
         rs = insertRs ? {
@@ -84,7 +110,7 @@ router.post('/delete', async (ctx, next) => {
     }
     let rs = {};
     let removeRs = await nedb.deleteDB({
-        name: 'produceUnit_inputs_materials',
+        name: 'produceTool_settings_config',
         filter: filter,
         data: ctx.request.body
     })

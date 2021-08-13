@@ -130,12 +130,16 @@ const reduceMaterial = async ({
 //接口测试
 router.post('/get', async (ctx, next) => {
     console.log('get', ctx.request.body);
+    let filter = ctx.request.body.filter
     let materilIdArr = ctx.request.body.materilIdArr
-    let filter = {
-        materialId: {
-            $in: materilIdArr
+    if (materilIdArr) {
+        filter = {
+            materialId: {
+                $in: materilIdArr
+            }
         }
     }
+
     let findRS = await nedb.findDB({
         name: 'produceTools_materials_stocks',
         filter: filter

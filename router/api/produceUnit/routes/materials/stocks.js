@@ -130,12 +130,17 @@ const reduceMaterial = async ({
 //接口测试
 router.post('/get', async (ctx, next) => {
     console.log('get', ctx.request.body);
+
+    let filter = ctx.request.body.filter
     let materilIdArr = ctx.request.body.materilIdArr
-    let filter = {
-        materialId: {
-            $in: materilIdArr
+    if (materilIdArr) {
+        filter = {
+            materialId: {
+                $in: materilIdArr
+            }
         }
     }
+
     let findRS = await nedb.findDB({
         name: 'produceUnit_materials_stocks',
         filter: filter
@@ -203,6 +208,26 @@ router.post('/reduce', async (ctx, next) => {
     }
     ctx.response.body = result
 });
+
+//批量增加接口
+router.post('/adds', async (ctx, next) => {
+    console.log('stocks adds', ctx.request.body);
+    let materialArr = ctx.request.body
+    let addRs = true
+    for (const n of materialArr) {
+        let rsN = await addMaterial(n)
+        addRs = addRs && rsN
+    }
+
+    let result = addRs ? {
+        result: 'success'
+    } : {
+        result: 'fail'
+    }
+    ctx.response.body = result
+});
+
+
 //批量减少接口
 router.post('/reduces', async (ctx, next) => {
     console.log('stocks reduces', ctx.request.body);

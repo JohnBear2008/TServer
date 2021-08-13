@@ -4,7 +4,7 @@ const nedb = require('../../../../../database/nedb')
 
 
 //接口测试
-router.post('/', async (ctx, next) => {
+router.post('/get', async (ctx, next) => {
     console.log('get', ctx.request.body);
     let findRS = await nedb.findDB({
         name: 'produceUnit_orders_stocks',
