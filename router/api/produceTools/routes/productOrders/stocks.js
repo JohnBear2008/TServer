@@ -43,7 +43,8 @@ const getBomArr = async (bomId) => {
         materials.push({
             materialId: n.subMaterialId,
             materialName: n.subMaterialName,
-            unitNum: n.unitNum
+            unitNum: n.unitNum,
+            stepId: rs2[0].stepId,
         })
         if (n.hasChildren === 1) {
             let subBomArr = await getBomArr(n.subMaterialId)
@@ -56,6 +57,7 @@ const getBomArr = async (bomId) => {
         materialName: rs1[0].materialName,
         unitNum: rs1[0].unitNum,
         procedureId: rs2[0].procedureId,
+
         materials: materials
     }
     bomArr.push(bom)
