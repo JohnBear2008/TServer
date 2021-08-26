@@ -14,6 +14,10 @@ const fs = require('fs');
 const divCors = require('./funs/cors')
 app.use(divCors);
 
+//静态服务引入
+const serve = require('koa-static-server')
+
+app.use(serve({rootDir: 'dist'}))
 
 //文件上传组件
 const koaBody = require('koa-body'); //此组件同koa-bodyparser 冲突 不能同时启用,启用此组件,可替换koa-bodyparser

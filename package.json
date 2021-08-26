@@ -12,6 +12,7 @@
     "koa-jwt": "^3.6.0",
     "koa-router": "^8.0.8",
     "koa-sslify": "^4.0.3",
+    "koa-static-server": "^1.5.2",
     "koa2-cors": "^2.0.6",
     "moment": "^2.24.0",
     "mssql": "^6.3.1",
